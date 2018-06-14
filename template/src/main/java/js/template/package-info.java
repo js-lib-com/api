@@ -36,7 +36,7 @@
  * <li>domain model interface should satisfy business logic needs only; it is not advisable to add getters
  * not strictly requested by business,
  * <li>when using getters developer may be tempted to manipulate model fields in order to fill presentation
- * needs resulting in impedance missmatch.
+ * needs resulting in impedance mismatch.
  * </ol>  
  *  
  * <h3>Template Syntax</h3>
