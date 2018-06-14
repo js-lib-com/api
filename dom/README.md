@@ -24,4 +24,4 @@ Document document = builder.load(documentFile);
 ### Known Limitation
 This package element abstraction does not have support for mixed child elements and text content. Usually an element 
 with text content has not child elements. This is by design, in the effort to keep elements navigation simpler. Anyway,
-there is support for text with formatting tags, see {@link js.dom.Element#setRichText(String)} and its related getter.
+there is support for text with formatting tags, see js.dom.Element#setRichText(String) and its related getter.
