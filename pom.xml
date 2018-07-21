@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>js-lib</groupId>
+	<groupId>com.js-lib</groupId>
 	<artifactId>api</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
@@ -13,6 +13,28 @@
 		<module>transaction</module>
 	</modules>
 
+	<name>j(s)-lib APIs</name>
+	<description>Simplified set of APIs for j(s)-lib ecosystem.</description>
+	<url>https://github.com/js-lib-com/api</url>
+
+	<developers>
+		<developer>
+			<name>Iulian Rotaru</name>
+			<email>iulian@js-lib.com</email>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>https://github.com/js-lib-com/api.git</connection>
+		<url>https://github.com/js-lib-com/api</url>
+	</scm>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -60,6 +82,31 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
