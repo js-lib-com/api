@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * Template instance is created by templates engine and perform domain object injection. Implementation should be
- * reusable and thread safe. Also should be able to cope with not restricted complex domain model and after processing
- * model instance should not be changed.
+ * Template is a serialized text document with place holders where domain object properties are injected. Serialization
+ * process should not alter domain object, see {@link #serialize(Object, Writer)}. Template instance is created by
+ * templates engine. Implementation should be reusable and thread safe. Also should be able to cope with not restricted
+ * complex domain model.
  * <p>
- * In order to not alter domain model with interfaces specialized only for presentation, templates engine recommend
- * using reflection. If use object fields or getter methods is implementation detail. Anyway, using fields access comes
- * with two advantages:
+ * In order to not force domain model to implement interfaces specialized only for presentation, templates engine
+ * recommend using reflection. If use object fields or getter methods is implementation detail. Anyway, using fields
+ * access comes with two advantages:
  * <ol>
- * <li>domain model interface should satisfy business logic needs only; it is not advisable to add getters not strictly
+ * <li>domain model interface should satisfy only business logic needs; it is not advisable to add getters not strictly
  * requested by business,
  * <li>when using getters developer may be tempted to manipulate model fields in order to fill presentation needs
  * resulting in impedance mismatch.
@@ -23,6 +24,18 @@ import java.io.Writer;
  */
 public interface Template
 {
+  /**
+   * Every template has an unique name used to identify template on current JVM. This name is provided by external
+   * logic.
+   * <p>
+   * When {@link TemplateEngine} creates template instance takes care to provide this template name, see
+   * {@link TemplateEngine#getTemplate(String, java.io.Reader)}. Implementation of this getter should return that
+   * template name.
+   * 
+   * @return template unique name.
+   */
+  String getName();
+
   /**
    * Set template instance properties overriding the template engine ones.
    * <p>
@@ -42,8 +55,8 @@ public interface Template
    * Though does not make much sense null domain model is accepted. If domain model is null implementation should
    * serialize template itself.
    * 
-   * @param writer writer to send template processing result,
-   * @param model domain object, null accepted.
+   * @param model domain object, null accepted,
+   * @param writer writer to send template processing result.
    * @throws IllegalArgumentException if <code>writer</code> argument is null.
    * @throws IOException if template serialization fails.
    */
