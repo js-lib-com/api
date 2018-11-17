@@ -27,7 +27,7 @@ import js.lang.Configurable;
  * and configured then reused for email creation.
  * 
  * <pre>
- * EmailSender sender = ServiceLoader.load(EmailSender.clas).iterator().next();
+ * EmailSender sender = ServiceLoader.load(EmailSender.class).iterator().next();
  * ConfigBuilder builder = new ConfigBuilder(new File(&quot;conf/emails.xml&quot;));
  * sender.config(builder.build());
  * ...
