@@ -1,6 +1,7 @@
 package js.transaction;
 
-import js.lang.Configurable;
+import js.lang.Config;
+import js.lang.ConfigException;
 
 /**
  * Transaction manager is a factory for transaction instances. Transaction manager is more a service provider interface
@@ -8,10 +9,9 @@ import js.lang.Configurable;
  * transaction manager directly. Anyway, implementation is encouraged to expose transaction manager as a Java service.
  * Also implementation should be thread safe and reusable.
  * <p>
- * Transaction manager is configurable and need to implement {@link Configurable#config(js.lang.Config)} method.
- * Configuration object is implementation specific. When create transaction manager need to configure it. Since
- * transaction manager instance creation is costly it is recommended to cache an reuse it; recommended way is to create
- * application singleton.
+ * Transaction manager is configurable via {@link #config(js.lang.Config)} method. Configuration object is
+ * implementation specific. When create transaction manager need to configure it. Since transaction manager instance
+ * creation is costly it is recommended to cache an reuse it; recommended way is to create application singleton.
  * 
  * <pre>
  * // implementation specific configuration
@@ -68,8 +68,21 @@ import js.lang.Configurable;
  * @author Iulian Rotaru
  * @version final
  */
-public interface TransactionManager extends Configurable
+public interface TransactionManager
 {
+  /**
+   * Configure this transaction manager using a given configuration object. Configuration object is clearly dependent on
+   * specific implementation; it is implementation responsibility to ensure configuration object is valid, accordingly
+   * its internal rules. If validation fails implementation should throw {@link ConfigException}.
+   * <p>
+   * Configuration object can be null, in which case implementation should use some default properties or collect
+   * configuration from specific means.
+   * 
+   * @param config configuration object, possible null.
+   * @throws ConfigException if given configuration object is not valid.
+   */
+  void config(Config config) throws ConfigException;
+
   /**
    * Create a new transaction instance. Creating a transaction instance begins the transactional scope and is mandatory
    * to be concluded by close, as in sample code. Creating transactions and failing to close them will exhaust
