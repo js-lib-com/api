@@ -103,20 +103,27 @@ public interface TransactionManager
    *   t.close(); // mandatory to close transactional scope
    * }
    * </pre>
+   * <p>
+   * When create a transaction is possible to request a specific transactional schema. This limits the scope of
+   * transactional resource objects that can be accessed from transaction. If not provided created transaction used
+   * implicit / global schema. Depending on implementation, transactional schema can have alternative names, e.g. JPA
+   * name it persistence unit.
    * 
+   * @param schema optional transactional schema, null if not used.
    * @return newly created transaction instance.
    * @throws TransactionException if transaction creation fails.
    */
-  Transaction createTransaction();
+  Transaction createTransaction(String schema);
 
   /**
    * Create a read-only transaction instance. This is a variant of {@link #createTransaction()} optimized for read-only
    * transactions.
    * 
+   * @param schema optional transactional schema, null if not used.
    * @return newly create transaction instance.
    * @throws TransactionException if transaction creation fails.
    */
-  Transaction createReadOnlyTransaction();
+  Transaction createReadOnlyTransaction(String schema);
 
   /**
    * Helper method used to execute a transactional block of code programmatically. In sample code below, working unit is
@@ -136,6 +143,26 @@ public interface TransactionManager
    * </pre>
    * 
    * See {@link WorkingUnit} interface.
+   * <p>
+   * When create a transaction is possible to request a specific transactional schema. This limits the scope of
+   * transactional resource objects that can be accessed from transaction. If not provided created transaction used
+   * implicit / global schema. Depending on implementation, transactional schema can have alternative names, e.g. JPA
+   * name it persistence unit.
+   * 
+   * @param schema optional transactional schema, null if not used.
+   * @param workingUnit workingUnit to be executed transactional,
+   * @param args variable arguments list to be passed to {@link WorkingUnit#exec(Object, Object...)}.
+   * @param <S> session object type.
+   * @param <T> working unit returned type.
+   * @return the object returned by executed working unit.
+   * @throws TransactionException if working unit execution fails in some way. Note that the root cause is set to the
+   *           actual working unit exception.
+   */
+  <S, T> T exec(String schema, WorkingUnit<S, T> workingUnit, Object... args) throws TransactionException;
+
+  /**
+   * Convenient alternative of {@link #exec(String, WorkingUnit, Object...)} when use default / global transactional
+   * schema.
    * 
    * @param workingUnit workingUnit to be executed transactional,
    * @param args variable arguments list to be passed to {@link WorkingUnit#exec(Object, Object...)}.
@@ -145,7 +172,7 @@ public interface TransactionManager
    * @throws TransactionException if working unit execution fails in some way. Note that the root cause is set to the
    *           actual working unit exception.
    */
-  <S, T> T exec(WorkingUnit<S, T> workingUnit, Object... args);
+  <S, T> T exec(WorkingUnit<S, T> workingUnit, Object... args) throws TransactionException;
 
   /** Release transactional resources. */
   void destroy();
