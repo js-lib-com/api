@@ -3,7 +3,7 @@ package js.transaction;
 /**
  * A transaction supplies methods to mark transaction boundaries. Transactional working unit is executed between this
  * transaction instance creation and transaction commit. Transaction instance is obtained from transaction manager, see
- * {@link TransactionManager#createTransaction()}. If working unit or commit fails transaction is rolled back. After working
+ * {@link TransactionManager#createTransaction(String)}. If working unit or commit fails transaction is rolled back. After working
  * unit completes, successful or erroneous transaction instance should be closed.
  * <p>
  * Here is standard use case.

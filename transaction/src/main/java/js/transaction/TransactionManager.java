@@ -116,7 +116,7 @@ public interface TransactionManager
   Transaction createTransaction(String schema);
 
   /**
-   * Create a read-only transaction instance. This is a variant of {@link #createTransaction()} optimized for read-only
+   * Create a read-only transaction instance. This is a variant of {@link #createTransaction(String)} optimized for read-only
    * transactions.
    * 
    * @param schema optional transactional schema, null if not used.
