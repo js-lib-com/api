@@ -6,11 +6,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>dom</module>
-		<module>email</module>
-		<module>json</module>
-		<module>template</module>
-		<module>transaction</module>
+		<module>csv-api</module>
+		<module>dom-api</module>
+		<module>email-api</module>
+		<module>json-api</module>
+		<module>template-api</module>
+		<module>transaction-api</module>
 	</modules>
 
 	<name>j(s)-lib APIs</name>
