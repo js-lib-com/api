@@ -1,6 +1,11 @@
 package js.csv;
 
-public enum CsvComment
+/**
+ * Built-in characters used for CSV comment line start.
+ * 
+ * @author Iulian Rotaru
+ */
+public enum CsvComment implements CharEnum
 {
   NONE('\0'), POUND('#'), SLASH('/'), BACKSLASH('\\'), ASTERISK('*'), QUESTION('?'), EXCLAMATION('!'), COLON(':'), SEMICOLON(';');
 
@@ -11,7 +16,7 @@ public enum CsvComment
     this.value = value;
   }
 
-  public char value()
+  public char value(int... unused)
   {
     return value;
   }

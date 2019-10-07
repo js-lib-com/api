@@ -1,6 +1,11 @@
 package js.csv;
 
-public enum CsvEscape
+/**
+ * Built-in characters used for CSV value escaping.
+ * 
+ * @author Iulian Rotaru
+ */
+public enum CsvEscape implements CharEnum
 {
   NONE('\0'), DOUBLE_QUOTATION('"'), SINGLE_QUOTATION('\''), PIPE('|'), SLASH('/'), BACKSLASH('\\');
 
@@ -11,7 +16,8 @@ public enum CsvEscape
     this.value = value;
   }
 
-  public char value()
+  @Override
+  public char value(int... index)
   {
     return value;
   }
