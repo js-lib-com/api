@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 /**
@@ -22,6 +23,8 @@ import org.xml.sax.InputSource;
  */
 public interface DocumentBuilder
 {
+  EntityResolver getDefaultEntityResolver();
+
   /**
    * Create empty XML document with requested root element. Created document is not name space aware and uses UTF-8 for
    * character encoding.
