@@ -580,11 +580,21 @@ public interface Element
   Element removeText();
 
   /**
-   * Get element text content or empty string.
+   * Get text content for this element and all descendants. Returned string does not contain any markup and no
+   * whitespace normalization is performed. If there is no text nodes on this element sub-tree this method returns empty
+   * string.
    * 
-   * @return element text content.
+   * @return element text content, possible empty but never null.
    */
   String getText();
+
+  /**
+   * Get text content for this element only. This method is similar to {@link #getText()} but does not include text from
+   * descendants, only text nodes direct child of this element.
+   * 
+   * @return this element text content, possible empty but never null.
+   */
+  String getTextContent();
 
   /**
    * Create a document fragment from given rich text and append it to this element, after removing all children. In this
@@ -598,8 +608,8 @@ public interface Element
 
   /**
    * Get this element rich text content. In this method context rich text is a text with format tags like
-   * <code>strong</code>. This method returns element inner HTML as a string representation. Note that format elements
-   * are not expected to have attributes and that this method ignores them, if present.
+   * <code>strong</code>. This method returns element inner HTML as a string representation. Note that formatting
+   * elements are not expected to have attributes and that this method ignores them, if present.
    * 
    * @return this element rich text content.
    */

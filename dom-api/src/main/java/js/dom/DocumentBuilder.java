@@ -14,9 +14,6 @@ import org.xml.sax.InputSource;
  * sources: file, input stream, input source and URL. There are different factory methods for XML and HTML documents and
  * all are in two flavors: with or without name space support. For name space support this class follows W3C DOM
  * notation convention and uses <code>NS</code> suffix.
- * <p>
- * All loaders use XML declaration or HTML meta Content-Type to choose characters encoding; anyway, loader variant using
- * input source can force a particular encoding.
  * 
  * @author Iulian Rotaru
  * @version final
@@ -383,8 +380,7 @@ public interface DocumentBuilder
   // load HTML document from URL
 
   /**
-   * Load HTML document from source URL. For parsing uses character set specified by <code>Content-Type</code> header
-   * from HTTP response.
+   * Load HTML document from source URL using UTF-8 encoding.
    * 
    * @param url source URL.
    * @return newly created HTML document.
@@ -393,12 +389,31 @@ public interface DocumentBuilder
   Document loadHTML(URL url) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with support for name spaces, from source URL. For parsing uses character set specified by
-   * <code>Content-Type</code> header from HTTP response.
+   * Load HTML document from source URL using specified encoding.
+   * 
+   * @param url source URL,
+   * @param encoding character set used to parse source URL.
+   * @return newly created HTML document.
+   * @throws IllegalArgumentException if <code>url</code> argument is null.
+   */
+  Document loadHTML(URL url, String encoding) throws IllegalArgumentException;
+
+  /**
+   * Load HTML document with support for name spaces, from source URL using UTF-8 encoding.
    * 
    * @param url source URL.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>url</code> argument is null.
    */
   Document loadHTMLNS(URL url) throws IllegalArgumentException;
+
+  /**
+   * Load HTML document with support for name spaces, from source URL using specified encoding.
+   * 
+   * @param url source URL,
+   * @param encoding character set used to parse source URL.
+   * @return newly created HTML document.
+   * @throws IllegalArgumentException if <code>url</code> argument is null.
+   */
+  Document loadHTMLNS(URL url, String encoding) throws IllegalArgumentException;
 }
