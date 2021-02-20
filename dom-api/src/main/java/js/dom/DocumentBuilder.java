@@ -11,9 +11,9 @@ import org.xml.sax.InputSource;
 
 /**
  * Document object builder. Supply factory methods for documents creation, parsing from string and loading from various
- * sources: file, input stream, input source and URL. There are different factory methods for XML and HTML documents and
- * all are in two flavors: with or without name space support. For name space support this class follows W3C DOM
- * notation convention and uses <code>NS</code> suffix.
+ * sources: file, reader, input stream, input source and URL. There are different factory methods for XML and HTML
+ * documents and all are in two flavors: with or without name space support. For name space support this class follows
+ * W3C DOM notation convention and uses <code>NS</code> suffix.
  * 
  * @author Iulian Rotaru
  * @version final
@@ -89,7 +89,8 @@ public interface DocumentBuilder
   // load XML document from input stream
 
   /**
-   * Load XML document from input stream. Returned document is not name space aware and uses UTF-8 encoding.
+   * Load XML document from input stream. Returned document is not name space aware and uses UTF-8 encoding. Input
+   * stream is closed after document load.
    * 
    * @param stream input stream.
    * @return newly created XML document.
@@ -98,7 +99,8 @@ public interface DocumentBuilder
   Document loadXML(InputStream stream) throws IllegalArgumentException;
 
   /**
-   * Load XML document with name spaces support from input stream. Returned XML document uses UTF-8 encoding.
+   * Load XML document with name spaces support from input stream. Returned XML document uses UTF-8 encoding. Input
+   * stream is closed after document load.
    * 
    * @param stream input stream,
    * @return newly created XML document.
@@ -110,7 +112,8 @@ public interface DocumentBuilder
   // load XML document from reader
 
   /**
-   * Load XML document from reader. Returned document is not name space aware and uses UTF-8 encoding.
+   * Load XML document from reader. Returned document is not name space aware and uses UTF-8 encoding. Source reader is
+   * closed after document load.
    * 
    * @param reader source reader.
    * @return newly created XML document.
@@ -119,7 +122,8 @@ public interface DocumentBuilder
   Document loadXML(Reader reader) throws IllegalArgumentException;
 
   /**
-   * Load XML document with name spaces support from reader. Returned XML document uses UTF-8 encoding.
+   * Load XML document with name spaces support from reader. Returned XML document uses UTF-8 encoding. Source reader is
+   * closed after document load.
    * 
    * @param reader source reader,
    * @return newly created XML document.
@@ -131,7 +135,8 @@ public interface DocumentBuilder
   // load XML document from input source
 
   /**
-   * Load XML document from input source. Returned document is not name space aware and uses UTF-8 encoding.
+   * Load XML document from input source. Returned document is not name space aware and uses UTF-8 encoding. Input
+   * source is closed after document load.
    * 
    * @param source input source.
    * @return newly created XML document.
@@ -140,7 +145,8 @@ public interface DocumentBuilder
   Document loadXML(InputSource source) throws IllegalArgumentException;
 
   /**
-   * Load XML document with name spaces support from input source. Returned XML document uses UTF-8 encoding.
+   * Load XML document with name spaces support from input source. Returned XML document uses UTF-8 encoding. Input
+   * source is closed after document load.
    * 
    * @param source input source.
    * @return newly created XML document.
@@ -251,7 +257,8 @@ public interface DocumentBuilder
   // load HTML document from input stream
 
   /**
-   * Load HTML document from bytes stream using UTF-8 character set. Returned document is not name space aware.
+   * Load HTML document from bytes stream using UTF-8 character set. Returned document is not name space aware. Input
+   * stream is closed after document load.
    * 
    * @param stream input bytes stream.
    * @return newly created HTML document.
@@ -260,7 +267,8 @@ public interface DocumentBuilder
   Document loadHTML(InputStream stream) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from bytes stream, using UTF-8 character set.
+   * Load HTML document with name space support from bytes stream, using UTF-8 character set. Input stream is closed
+   * after document load.
    * 
    * @param stream input bytes stream.
    * @return newly created HTML document.
@@ -269,7 +277,7 @@ public interface DocumentBuilder
   Document loadHTMLNS(InputStream stream) throws IllegalArgumentException;
 
   /**
-   * Load HTML document from bytes stream using specified character set.
+   * Load HTML document from bytes stream using specified character set. Input stream is closed after document load.
    * 
    * @param stream input bytes stream,
    * @param encoding character set used to parse input stream.
@@ -280,7 +288,8 @@ public interface DocumentBuilder
   Document loadHTML(InputStream stream, String encoding) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from bytes stream, using specified character set.
+   * Load HTML document with name space support from bytes stream, using specified character set. Input stream is closed
+   * after document load.
    * 
    * @param stream input bytes stream,
    * @param encoding character set used to parse input stream.
@@ -295,6 +304,7 @@ public interface DocumentBuilder
 
   /**
    * Load HTML document from characters stream using UTF-8 character set. Returned document is not name space aware.
+   * Source reader is closed after document load.
    * 
    * @param reader input characters stream.
    * @return newly created HTML document.
@@ -303,7 +313,8 @@ public interface DocumentBuilder
   Document loadHTML(Reader reader) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from characters stream, using UTF-8 character set.
+   * Load HTML document with name space support from characters stream, using UTF-8 character set. Source reader is
+   * closed after document load.
    * 
    * @param reader input characters stream.
    * @return newly created HTML document.
@@ -313,6 +324,7 @@ public interface DocumentBuilder
 
   /**
    * Load HTML document from characters stream using specified character set. Returned document is not name space aware.
+   * Source reader is closed after document load.
    * 
    * @param reader input characters stream,
    * @param encoding character set used to parse input stream.
@@ -323,7 +335,8 @@ public interface DocumentBuilder
   Document loadHTML(Reader reader, String encoding) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from characters stream, using specified character set.
+   * Load HTML document with name space support from characters stream, using specified character set. Source reader is
+   * closed after document load.
    * 
    * @param reader input characters stream,
    * @param encoding character set used to parse input stream.
@@ -337,7 +350,8 @@ public interface DocumentBuilder
   // load HTML document from input source
 
   /**
-   * Load HTML document from input source using UTF-8 character set. Returned document is not name space aware.
+   * Load HTML document from input source using UTF-8 character set. Returned document is not name space aware. Input
+   * source is closed after document load.
    * 
    * @param source input source.
    * @return newly created HTML document.
@@ -346,7 +360,8 @@ public interface DocumentBuilder
   Document loadHTML(InputSource source) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from input source, using UTF-8 character set.
+   * Load HTML document with name space support from input source, using UTF-8 character set. Input source is closed
+   * after document load.
    * 
    * @param source input source.
    * @return newly created HTML document.
@@ -356,6 +371,7 @@ public interface DocumentBuilder
 
   /**
    * Load HTML document from input source using specified character set. Returned document is not name space aware.
+   * Input source is closed after document load.
    * 
    * @param source input source,
    * @param encoding character set used to parse input source.
@@ -366,7 +382,8 @@ public interface DocumentBuilder
   Document loadHTML(InputSource source, String encoding) throws IllegalArgumentException;
 
   /**
-   * Load HTML document with name space support from input source, using specified character set.
+   * Load HTML document with name space support from input source, using specified character set. Input source is closed
+   * after document load.
    * 
    * @param source input source,
    * @param encoding character set used to parse input source.
