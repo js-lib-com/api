@@ -220,6 +220,22 @@ public interface Document
   Element getByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args);
 
   /**
+   * Convenient variant of {@link #getByXPathNS(NamespaceContext, String, Object...)} usable when document has a single
+   * namespace.
+   * <p>
+   * XPath expression <code>xpath</code> can be formatted as supported by {@link String#format} in which case
+   * <code>args</code> arguments should be supplied.
+   * 
+   * @param namespaceURI name space URI, possible wild card or null,
+   * @param xpath XPath expression to evaluate,
+   * @param args optional arguments if <code>xpath</code> is formatted.
+   * @return first element found or null.
+   * @throws IllegalArgumentException if <code>namespaceURI</code> or <code>xpath</code> parameter is null or empty.
+   * @since 1.2
+   */
+  Element getByXPathNS(String namespaceURI, String xpath, Object... args);
+
+  /**
    * Evaluate XPath expression and return the list of found elements. Returns empty list if XPath evaluation has no
    * results. Note that XPath expression is case sensitive; this is especially relevant for HTML documents that uses
    * upper case for tag names.
@@ -253,6 +269,22 @@ public interface Document
    *           is null or empty.
    */
   EList findByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args);
+
+  /**
+   * Convenient variant of {@link #findByXPathNS(NamespaceContext, String, Object...)} usable when document has a single
+   * namespace.
+   * <p>
+   * XPath expression <code>xpath</code> can be formatted as supported by {@link String#format} in which case
+   * <code>args</code> arguments should be supplied.
+   * 
+   * @param namespaceURI name space URI, possible wild card or null,
+   * @param xpath XPath expression to evaluate,
+   * @param args optional arguments if <code>xpath</code> is formatted.
+   * @return list of found elements, possible empty.
+   * @throws IllegalArgumentException if <code>namespaceURI</code> or <code>xpath</code> parameter is null or empty.
+   * @since 1.2
+   */
+  EList findByXPathNS(String namespaceURI, String xpath, Object... args);
 
   /**
    * Evaluate CSS selectors and return first element found. Returns null if CSS evaluation has no results. CSS
