@@ -129,8 +129,8 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<id>js-lib</id>
+			<url>http://maven.js-lib.com/</url>
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
