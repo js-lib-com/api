@@ -1,5 +1,11 @@
 package js.dom;
 
+import java.io.IOException;
+
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
 /**
  * Document element. This interface is the central piece of the document model; in fact a document is just a tree of
  * elements. An element has a tag, optional attributes and possible other elements as children. Also an element may have
@@ -15,7 +21,6 @@ package js.dom;
  * see {@link #getParent()}. Element parent and children enables document tree navigation.
  * 
  * @author Iulian Rotaru
- * @version final
  */
 public interface Element
 {
@@ -37,7 +42,6 @@ public interface Element
    * 
    * @param child one or more child element(s) to be appended.
    * @return this element.
-   * @throws IllegalArgumentException if a child is null.
    */
   Element addChild(Element... child);
 
@@ -48,7 +52,6 @@ public interface Element
    * After replacement this element is not longer part of the document tree.
    * 
    * @param replacement element to replace this one.
-   * @throws IllegalArgumentException if replacement element parameter is null.
    */
   void replace(Element replacement);
 
@@ -61,7 +64,6 @@ public interface Element
    * @param replacement element to be inserted,
    * @param existing existing child, to be replaced.
    * @return this object.
-   * @throws IllegalArgumentException if replacement or existing element parameter is null.
    */
   Element replaceChild(Element replacement, Element existing);
 
@@ -74,7 +76,6 @@ public interface Element
    * 
    * @param child element to be inserted as first child.
    * @return this object.
-   * @throws IllegalArgumentException if <code>child</code> parameter is null.
    */
   Element insertChild(Element child);
 
@@ -88,7 +89,6 @@ public interface Element
    * 
    * @param children elements to be inserted as first child elements.
    * @return this object.
-   * @throws IllegalArgumentException if <code>children</code> parameter is null.
    */
   Element insertChildren(EList children);
 
@@ -99,10 +99,9 @@ public interface Element
    * 
    * @param sibling element to be inserted.
    * @return this element.
-   * @throws IllegalArgumentException if <code>sibling</code> parameter is null.
    * @throws IllegalStateException if this node has no parent.
    */
-  Element insertBefore(Element sibling);
+  Element insertBefore(Element sibling) throws IllegalStateException;
 
   /**
    * Clone this element. If deep flag is true clone this element descendants too, otherwise a shallow copy is performed.
@@ -141,31 +140,30 @@ public interface Element
    * @param xpath formatted XPath expression,
    * @param args optional arguments if expression contains formats.
    * @return found element or null.
-   * @throws IllegalArgumentException if <code>xpath</code> parameter is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    */
-  Element getByXPath(String xpath, Object... args);
+  Element getByXPath(String xpath, Object... args) throws XPathExpressionException;
 
   /**
-   * Evaluate XPath expression with name space prefixes and return first element found. Returns null if XPath evaluation
+   * Evaluate XPath expression with namespace prefixes and return first element found. Returns null if XPath evaluation
    * has no results. Evaluation context is this element but only if XPath expression is not absolute or document global,
    * that is, does not start with single or double slash. If this is the case, returned element is not necessarily
    * descendant of this element.
    * <p>
-   * Name space context maps prefixes to name space URIs. See {@link NamespaceContext} for a discussion about
-   * expressions with name space.
+   * Name space context maps prefixes to namespace URIs. See {@link NamespaceContext} for a discussion about expressions
+   * with namespace.
    * <p>
    * XPath expression is case sensitive; this is especially relevant for HTML documents that uses upper case for tag
    * names. Also XPath expression can be formatted as supported by {@link String#format} in which case <code>args</code>
    * parameter should be supplied.
    * 
-   * @param namespaceContext name space context maps prefixes to name space URIs,
+   * @param namespaceContext namespace context maps prefixes to namespace URIs,
    * @param xpath XPath expression to evaluate,
    * @param args optional arguments if <code>xpath</code> is formatted.
    * @return first element found or null.
-   * @throws IllegalArgumentException if <code>namespaceContext</code> parameter is null or <code>xpath</code> parameter
-   *           is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    */
-  Element getByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args);
+  Element getByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args) throws XPathExpressionException;
 
   /**
    * Convenient variant of {@link #getByXPathNS(NamespaceContext, String, Object...)} usable when document has a single
@@ -174,14 +172,14 @@ public interface Element
    * XPath expression <code>xpath</code> can be formatted as supported by {@link String#format} in which case
    * <code>args</code> arguments should be supplied.
    * 
-   * @param namespaceURI name space URI, possible wild card or null,
+   * @param namespaceURI namespace URI, possible wild card or null,
    * @param xpath XPath expression to evaluate,
    * @param args optional arguments if <code>xpath</code> is formatted.
    * @return first element found or null.
-   * @throws IllegalArgumentException if <code>namespaceURI</code> or <code>xpath</code> parameter is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    * @since 1.2
    */
-  Element getByXPathNS(String namespaceURI, String xpath, Object... args);
+  Element getByXPathNS(String namespaceURI, String xpath, Object... args) throws XPathExpressionException;
 
   /**
    * Evaluate XPath expression and return the list of found elements. Returns empty list if XPath evaluation has no
@@ -196,12 +194,12 @@ public interface Element
    * @param xpath XPath expression to evaluate,
    * @param args optional arguments if <code>xpath</code> is formatted.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if <code>xpath</code> parameter is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    */
-  EList findByXPath(String xpath, Object... args);
+  EList findByXPath(String xpath, Object... args) throws XPathExpressionException;
 
   /**
-   * Evaluate XPath expression with name space prefixes and return the list of found elements. Returns empty list if
+   * Evaluate XPath expression with namespace prefixes and return the list of found elements. Returns empty list if
    * XPath evaluation has no results. Evaluation context is this element but only if XPath expression is not absolute or
    * document global, that is, does not start with single or double slash. If this is the case, returned elements are
    * not necessarily descendants of this element.
@@ -210,17 +208,16 @@ public interface Element
    * names. Also XPath expression can be formatted as supported by {@link String#format} in which case <code>args</code>
    * parameter should be supplied.
    * <p>
-   * Name space context maps prefixes to name space URI. See {@link NamespaceContext} for a discussion about expressions
-   * with name space.
+   * Name space context maps prefixes to namespace URI. See {@link NamespaceContext} for a discussion about expressions
+   * with namespace.
    * 
-   * @param namespaceContext name space context,
+   * @param namespaceContext namespace context,
    * @param xpath XPath expression to evaluate,
    * @param args optional arguments if <code>xpath</code> is formatted.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if <code>namespaceContext</code> parameter is null or <code>xpath</code> parameter
-   *           is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    */
-  EList findByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args);
+  EList findByXPathNS(NamespaceContext namespaceContext, String xpath, Object... args) throws XPathExpressionException;
 
   /**
    * Convenient variant of {@link #findByXPathNS(NamespaceContext, String, Object...)} usable when document has a single
@@ -229,42 +226,14 @@ public interface Element
    * XPath expression <code>xpath</code> can be formatted as supported by {@link String#format} in which case
    * <code>args</code> arguments should be supplied.
    * 
-   * @param namespaceURI name space URI, possible wild card or null,
+   * @param namespaceURI namespace URI, possible wild card or null,
    * @param xpath XPath expression to evaluate,
    * @param args optional arguments if <code>xpath</code> is formatted.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if <code>namespaceURI</code> or <code>xpath</code> parameter is null or empty.
+   * @throws XPathExpressionException if given XPath expression is not valid.
    * @since 1.2
    */
-  EList findByXPathNS(String namespaceURI, String xpath, Object... args);
-
-  /**
-   * Evaluate CSS selectors and return first element found. Returns null if CSS evaluation has no results. CSS
-   * <code>selector</code> can be formatted as supported by {@link String#format} in which case <code>args</code>
-   * parameter should be supplied.
-   * <p>
-   * Implementation note: this method is not yet implemented and always throws unsupported operation.
-   * 
-   * @param selector CSS selector to evaluate,
-   * @param args optional arguments if <code>selector</code> is formatted.
-   * @return first found element or null.
-   * @throws IllegalArgumentException if <code>selector</code> parameter is null or empty.
-   */
-  Element getByCss(String selector, Object... args);
-
-  /**
-   * Find elements by CSS selectors. Evaluate CSS selectors and return found elements. Returns empty list if CSS
-   * evaluation has no results. CSS <code>selector</code> can be formatted as supported by {@link String#format} in
-   * which case <code>args</code> parameter should be supplied.
-   * <p>
-   * Implementation note: this method is not yet implemented and always throws unsupported operation.
-   * 
-   * @param selectors CSS selectors to evaluate,
-   * @param args optional arguments if <code>selector</code> is formatted.
-   * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if <code>selector</code> parameter is null or empty.
-   */
-  EList findByCss(String selectors, Object... args);
+  EList findByXPathNS(String namespaceURI, String xpath, Object... args) throws XPathExpressionException;
 
   /**
    * Get the first descendant with requested tag name. Search all descendants for elements with given tag name and
@@ -273,35 +242,33 @@ public interface Element
    * is, depth-first.
    * <p>
    * On XML documents tag name is case sensitive whereas in HTML is not. For consistency sake is recommended to always
-   * consider tags name as case sensitive. Also, if document contains name spaces but is parsed without name space
-   * support, tag name for name space elements should use name space prefix.
+   * consider tags name as case sensitive. Also, if document contains namespaces but is parsed without namespace
+   * support, tag name for namespace elements should use namespace prefix.
    * 
    * @param tagName case sensitive tag name to search for.
    * @return first descendant element with specified tag or null.
-   * @throws IllegalArgumentException if tag name parameter is null or empty.
    */
   Element getByTag(String tagName);
 
   /**
-   * Get the descendant element with tag name in the requested name space. Tag name is a local name, that is, has no
-   * name space prefix; name space if identified by separated <code>namespaceURI</code> parameter.
+   * Get the descendant element with tag name in the requested namespace. Tag name is a local name, that is, has no
+   * namespace prefix; namespace if identified by separated <code>namespaceURI</code> parameter.
    * <p>
-   * Search all descendants for element with given tag name, within name space, and return the first found. Returns null
+   * Search all descendants for element with given tag name, within namespace, and return the first found. Returns null
    * if there is no element with requested tag name. Note that wild card asterisk (*) for tag name matches all tags in
-   * which case first child is returned. Always returns null if this document is not parsed with name space support.
+   * which case first child is returned. Always returns null if this document is not parsed with namespace support.
    * Search is performed in depth-first order.
    * <p>
-   * If name space parameter is wild card ('*') all name spaces are considered, that is, entire document. Null name
-   * space is considered default scope, that is, elements without any prefix in which case this method degenerates to
+   * If namespace parameter is wild card ('*') all namespaces are considered, that is, entire document. Null name space
+   * is considered default scope, that is, elements without any prefix in which case this method degenerates to
    * {@link #getByTag(String)} counterpart.
    * <p>
    * On XML documents tag name is case sensitive whereas in HTML is not. For consistency sake is recommended to always
    * consider tag names as case sensitive.
    * 
-   * @param namespaceURI name space URI,
+   * @param namespaceURI namespace URI,
    * @param tagName local tag name to search for, case sensitive.
    * @return first element with specified tag or null.
-   * @throws IllegalArgumentException if tag name parameter is null or empty.
    */
   Element getByTagNS(String namespaceURI, String tagName);
 
@@ -311,30 +278,28 @@ public interface Element
    * all descendant elements are returned.
    * <p>
    * On XML documents tag name is case sensitive whereas in HTML is not. For consistency sake is recommended to always
-   * consider tags name as case sensitive. If document contains name spaces but is parsed without name space support,
-   * tag name for name space elements should use name space prefix.
+   * consider tags name as case sensitive. If document contains namespaces but is parsed without namespace support, tag
+   * name for namespace elements should use namespace prefix.
    * 
    * @param tagName tag name to search for, case sensitive.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if tag name parameter is null or empty.
    */
   EList findByTag(String tagName);
 
   /**
-   * Retrieve all descendants with given tag name within requested name space. Search is performed in depth-first order.
+   * Retrieve all descendants with given tag name within requested namespace. Search is performed in depth-first order.
    * Returns empty list if there is not element with requested tag name. Note that wild card asterisk (*) for tag name
    * matches all tags in which case all elements are returned.
    * <p>
-   * If name space parameter is wild card ('*') all name spaces are considered, that is, entire document. Null name
-   * space is considered default scope, that is, elements without any prefix.
+   * If namespace parameter is wild card ('*') all namespaces are considered, that is, entire document. Null name space
+   * is considered default scope, that is, elements without any prefix.
    * <p>
    * On XML documents tag name is case sensitive whereas in HTML is not. For consistency sake is recommended to always
    * consider tag names as case sensitive.
    * 
-   * @param namespaceURI name space URI, possible wild card or null,
+   * @param namespaceURI namespace URI, possible wild card or null,
    * @param tagName local tag name, case sensitive.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if <code>tagName</code> parameter is null or empty.
    */
   EList findByTagNS(String namespaceURI, String tagName);
 
@@ -354,7 +319,6 @@ public interface Element
    * 
    * @param cssClass CSS class.
    * @return list of found elements, possible empty.
-   * @throws IllegalArgumentException if CSS class parameter is null or empty.
    */
   EList findByCssClass(String cssClass);
 
@@ -365,9 +329,24 @@ public interface Element
    * @param name attribute name,
    * @param value optional attribute value.
    * @return found element or null.
-   * @throws IllegalArgumentException if attribute name parameter is null or empty.
    */
   Element getByAttr(String name, String... value);
+
+  /**
+   * Get descendant element by attribute name and optional value within given namespace. Retrieve first descendant
+   * element possessing requested attribute. Returns null if there is no element with requested attribute name and
+   * value, if present.
+   * <p>
+   * If namespace parameter is wild card ('*') all namespaces are considered, that is, entire document. Null name space
+   * is considered default scope, that is, elements without any prefix.
+   * 
+   * @param namespaceURI namespace URI, possible wild card or null,
+   * @param name attribute name,
+   * @param value optional attribute value.
+   * @return found element or null.
+   * @since 1.2
+   */
+  Element getByAttrNS(String namespaceURI, String name, String... value);
 
   /**
    * Get the list of descendant elements having requested attribute. Requested attribute is identified by its name and
@@ -376,14 +355,23 @@ public interface Element
    * @param name attribute name,
    * @param value optional attribute value.
    * @return found element or null.
-   * @throws IllegalArgumentException if attribute name parameter is null or empty.
    */
   EList findByAttr(String name, String... value);
 
-  // TODO: there is no support from w3c api to find elements by attribute name and / or value
-  // trying to create an xpath to emulate is problematic because xpath needs prefix and namecontext uses name space URI
-  // find solution or remove method
-  // EList findByAttrNS(String namespaceURI, String name, String... value);
+  /**
+   * Get the list of descendant elements having requested attribute within given namespace. Requested attribute is
+   * identified by its name and optional value. Returns empty list if there is no element with requested attribute.
+   * <p>
+   * If namespace parameter is wild card ('*') all namespaces are considered, that is, entire document. Null name space
+   * is considered default scope, that is, elements without any prefix.
+   * 
+   * @param namespaceURI namespace URI, possible wild card or null,
+   * @param name attribute name,
+   * @param value optional attribute value.
+   * @return found element or null.
+   * @since 1.2
+   */
+  EList findByAttrNS(String namespaceURI, String name, String... value);
 
   /**
    * Returns this element parent or null if this element is the root.
@@ -485,19 +473,17 @@ public interface Element
   Element setAttr(String name, String value);
 
   /**
-   * Locate attribute with given local name into requested name space and set its value. Create attribute if not already
+   * Locate attribute with given local name into requested namespace and set its value. Create attribute if not already
    * present. Empty value is accepted in which case attribute is still created, if not exists, but its value will be
    * empty.
    * <p>
-   * Null name space is considered default scope, that is, elements without any prefix in which case this method
+   * Null namespace is considered default scope, that is, elements without any prefix in which case this method
    * degenerates to {@link #setAttr(String, String)} counterpart.
    * 
-   * @param namespaceURI name space URI,
+   * @param namespaceURI namespace URI,
    * @param name attribute local name,
    * @param value attribute value, empty accepted.
-   * @return this object.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty or <code>value</code> parameter is
-   *           null.
+   * @return this object. null.
    */
   Element setAttrNS(String namespaceURI, String name, String value);
 
@@ -514,7 +500,26 @@ public interface Element
    * @throws IllegalArgumentException if <code>nameValuePairs</code> parameter is not complete, that is, last name has
    *           not value or a value is null.
    */
-  Element setAttrs(String... nameValuePairs);
+  Element setAttrs(String... nameValuePairs) throws IllegalArgumentException;
+
+  /**
+   * Set one or more attribute values within given namespace. This method parameters are variable number of name/value
+   * pair for every desired argument. Is caller responsibility to ensure name/value is completely supplied and in the
+   * proper order.
+   * 
+   * <pre>
+   * el.setAttrNS(&quot;id&quot;, &quot;123&quot;, &quot;type&quot;, &quot;text&quot;);
+   * </pre>
+   * <p>
+   * If namespace URI parameter is null this method behave the same as {@link #setAttrs(String...)}.
+   * 
+   * @param namespaceURI namespace URI, possible null,
+   * @param nameValuePairs variable number of attribute name/value pairs.
+   * @return this element.
+   * @throws IllegalArgumentException if <code>nameValuePairs</code> parameter is not complete, that is, last name has
+   *           not value or a value is null.
+   */
+  Element setAttrsNS(String namespaceURI, String... nameValuePairs) throws IllegalArgumentException;
 
   /**
    * Get attributes list possible empty if this element has no attribute at all.
@@ -528,21 +533,19 @@ public interface Element
    * 
    * @param name attribute name.
    * @return attribute value or null.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty.
    */
   String getAttr(String name);
 
   /**
-   * Locate attribute with local name within given name space and returns its value. Returns null if attribute not found
+   * Locate attribute with local name within given namespace and returns its value. Returns null if attribute not found
    * or its value is empty.
    * <p>
-   * Null name space is considered default scope, that is, elements without any prefix in which case this method
+   * Null namespace is considered default scope, that is, elements without any prefix in which case this method
    * degenerates to {@link #getAttr(String)} counterpart.
    * 
-   * @param namespaceURI name space URI,
+   * @param namespaceURI namespace URI,
    * @param name attribute local name,
    * @return attribute value or null.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty.
    */
   String getAttrNS(String namespaceURI, String name);
 
@@ -552,21 +555,19 @@ public interface Element
    * 
    * @param name attribute name.
    * @return this object.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty.
    */
   Element removeAttr(String name);
 
   /**
-   * Remove attribute identified by local name within given name space. If no attribute found with specified
+   * Remove attribute identified by local name within given namespace. If no attribute found with specified
    * <code>name</code> this method is NOP.
    * <p>
-   * Null name space is considered default scope, that is, elements without any prefix in which case this method
+   * Null namespace is considered default scope, that is, elements without any prefix in which case this method
    * degenerates to {@link #removeAttr(String)} counterpart.
    * 
-   * @param namespaceURI name space URI,
+   * @param namespaceURI namespace URI,
    * @param name attribute name.
    * @return this object.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty.
    */
   Element removeAttrNS(String namespaceURI, String name);
 
@@ -579,9 +580,9 @@ public interface Element
   boolean hasAttr(String name);
 
   /**
-   * Test if this element has attribute with local name within given name space.
+   * Test if this element has attribute with local name within given namespace.
    * 
-   * @param namespaceURI name space URI,
+   * @param namespaceURI namespace URI,
    * @param name attribute local name.
    * @return true if this element has named attribute.
    */
@@ -636,7 +637,7 @@ public interface Element
    * @param richText rich text.
    * @return this element.
    */
-  Element setRichText(String richText);
+  Element setRichText(String richText) throws IOException, SAXException;
 
   /**
    * Get this element rich text content. In this method context rich text is a text with format tags like

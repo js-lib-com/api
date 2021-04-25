@@ -1,13 +1,13 @@
 package js.dom;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 
 import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Document object builder. Supply factory methods for documents creation, parsing from string and loading from various
@@ -16,7 +16,6 @@ import org.xml.sax.InputSource;
  * W3C DOM notation convention and uses <code>NS</code> suffix.
  * 
  * @author Iulian Rotaru
- * @version final
  */
 public interface DocumentBuilder
 {
@@ -26,20 +25,18 @@ public interface DocumentBuilder
    * Create empty XML document with requested root element. Created document is not name space aware and uses UTF-8 for
    * character encoding.
    * 
-   * @param root tag name of the root element.
+   * @param root tag name of the root element, null or empty not accepted.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>root</code> argument is null or empty.
    */
-  Document createXML(String root) throws IllegalArgumentException;
+  Document createXML(String root);
 
   /**
    * Create a new XML document with support for name spaces. Created document uses UTF-8 for character encoding.
    * 
-   * @param root tag name of the root element.
+   * @param root tag name of the root element, null or empty not accepted.
    * @return newly created document.
-   * @throws IllegalArgumentException if <code>root</code> argument is null or empty.
    */
-  Document createXMLNS(String root) throws IllegalArgumentException;
+  Document createXMLNS(String root);
 
   // ----------------------------------------------------
   // parse XML document from string source
@@ -47,43 +44,44 @@ public interface DocumentBuilder
   /**
    * Parse XML document form source string. Returned document is not name space aware and uses UTF-8 encoding.
    * 
-   * @param string source string.
+   * @param string non empty source string.
    * @return newly created document.
-   * @throws IllegalArgumentException if <code>string</code> argument is null or empty.
+   * @throws SAXException if source string is not valid XML document.
    */
-  Document parseXML(String string) throws IllegalArgumentException;
+  Document parseXML(String string) throws SAXException;
 
   /**
-   * Parse XML document from source string with support for name spaces. Returned XML document uses UTF-8 encoding.
+   * Parse XML document from source string with support for namespaces. Returned XML document is namespace aware and
+   * uses UTF-8 encoding.
    * 
-   * @param string source string, UTF-8.
+   * @param string non empty source string.
    * @return newly created document instance.
-   * @throws IllegalArgumentException if <code>string</code> argument is null or empty.
+   * @throws SAXException if source string is not valid XML document.
    */
-  Document parseXMLNS(String string) throws IllegalArgumentException;
+  Document parseXMLNS(String string) throws SAXException;
 
   // ----------------------------------------------------
   // load XML document from file
 
   /**
-   * Load XML document from file. Returned document is not name space aware and uses UTF-8 encoding.
+   * Load XML document from file. Returned document is not namespace aware and uses UTF-8 encoding.
    * 
    * @param file source file.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not actually a file.
-   * @throws FileNotFoundException if source file is missing.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid XML document.
    */
-  Document loadXML(File file) throws IllegalArgumentException, FileNotFoundException;
+  Document loadXML(File file) throws IOException, SAXException;
 
   /**
-   * Load XML document with name spaces support from file. Returned XML document uses UTF-8 encoding.
+   * Load XML document with namespaces support from file. Returned XML document uses UTF-8 encoding.
    * 
    * @param file source file,
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not actually a file.
-   * @throws FileNotFoundException if source file does not exist.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid XML document.
    */
-  Document loadXMLNS(File file) throws IllegalArgumentException, FileNotFoundException;
+  Document loadXMLNS(File file) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load XML document from input stream
@@ -94,9 +92,10 @@ public interface DocumentBuilder
    * 
    * @param stream input stream.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>stream</code> argument is null.
+   * @throws IOException if input stream reading fails.
+   * @throws SAXException if input stream content is not a valid XML document.
    */
-  Document loadXML(InputStream stream) throws IllegalArgumentException;
+  Document loadXML(InputStream stream) throws IOException, SAXException;
 
   /**
    * Load XML document with name spaces support from input stream. Returned XML document uses UTF-8 encoding. Input
@@ -104,9 +103,10 @@ public interface DocumentBuilder
    * 
    * @param stream input stream,
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>stream</code> argument is null.
+   * @throws IOException if input stream reading fails.
+   * @throws SAXException if input stream content is not a valid XML document.
    */
-  Document loadXMLNS(InputStream stream) throws IllegalArgumentException;
+  Document loadXMLNS(InputStream stream) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load XML document from reader
@@ -115,44 +115,23 @@ public interface DocumentBuilder
    * Load XML document from reader. Returned document is not name space aware and uses UTF-8 encoding. Source reader is
    * closed after document load.
    * 
-   * @param reader source reader.
+   * @param reader source character stream.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>reader</code> argument is null.
+   * @throws IOException if character stream reading fails.
+   * @throws SAXException if character stream content is not a valid XML document.
    */
-  Document loadXML(Reader reader) throws IllegalArgumentException;
+  Document loadXML(Reader reader) throws IOException, SAXException;
 
   /**
    * Load XML document with name spaces support from reader. Returned XML document uses UTF-8 encoding. Source reader is
    * closed after document load.
    * 
-   * @param reader source reader,
+   * @param reader source character stream.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>reader</code> argument is null.
+   * @throws IOException if character stream reading fails.
+   * @throws SAXException if character stream content is not a valid XML document.
    */
-  Document loadXMLNS(Reader reader) throws IllegalArgumentException;
-
-  // ----------------------------------------------------
-  // load XML document from input source
-
-  /**
-   * Load XML document from input source. Returned document is not name space aware and uses UTF-8 encoding. Input
-   * source is closed after document load.
-   * 
-   * @param source input source.
-   * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   */
-  Document loadXML(InputSource source) throws IllegalArgumentException;
-
-  /**
-   * Load XML document with name spaces support from input source. Returned XML document uses UTF-8 encoding. Input
-   * source is closed after document load.
-   * 
-   * @param source input source.
-   * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   */
-  Document loadXMLNS(InputSource source) throws IllegalArgumentException;
+  Document loadXMLNS(Reader reader) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load XML document from URL
@@ -160,20 +139,22 @@ public interface DocumentBuilder
   /**
    * Load XML document from source URL. Returned document is not name space aware and uses UTF-8 encoding.
    * 
-   * @param url source URL.
+   * @param url source document URL.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws IOException if source document reading fails.
+   * @throws SAXException if source document is not valid XML.
    */
-  Document loadXML(URL url) throws IllegalArgumentException;
+  Document loadXML(URL url) throws IOException, SAXException;
 
   /**
    * Load XML document with name spaces support from source URL. Returned XML document uses UTF-8 encoding.
    * 
-   * @param url source URL.
+   * @param url source document URL.
    * @return newly created XML document.
-   * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws IOException if source document reading fails.
+   * @throws SAXException if source document is not valid XML.
    */
-  Document loadXMLNS(URL url) throws IllegalArgumentException;
+  Document loadXMLNS(URL url) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // create empty HTML document
@@ -189,22 +170,22 @@ public interface DocumentBuilder
   // load HTML document from string source
 
   /**
-   * Parse HTML document from source string. Returned document is not name space aware.
+   * Parse HTML document from source string. Returned document is not namespace aware.
    * 
-   * @param string source string.
+   * @param string source string, null or empty not accepted.
    * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>string</code> argument is null or empty.
+   * @throws SAXException if source string is not valid HTML document.
    */
-  Document parseHTML(String string) throws IllegalArgumentException;
+  Document parseHTML(String string) throws SAXException;
 
   /**
-   * Parse HTML document with name space support from source string.
+   * Parse HTML document with namespace support from source string.
    * 
-   * @param string source string.
+   * @param string source string, null or empty not accepted.
    * @return newly create HTML document.
-   * @throws IllegalArgumentException if <code>string</code> argument is null or empty.
+   * @throws SAXException if source string is not valid HTML document.
    */
-  Document parseHTMLNS(String string) throws IllegalArgumentException;
+  Document parseHTMLNS(String string) throws SAXException;
 
   // ----------------------------------------------------
   // load HTML document from file
@@ -212,46 +193,44 @@ public interface DocumentBuilder
   /**
    * Load HTML document from source file using UTF-8 encoding. Returned document has not support for name space.
    * 
-   * @param file source file.
+   * @param file not null, ordinary, source file.
    * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not an ordinary file.
-   * @throws FileNotFoundException if source file does not exist.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid HTML document.
    */
-  Document loadHTML(File file) throws IllegalArgumentException, FileNotFoundException;
+  Document loadHTML(File file) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from source file, using UTF-8 encoding.
    * 
-   * @param file source file.
+   * @param file not null, ordinary, source file.
    * @return newly create HTML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not an ordinary file.
-   * @throws FileNotFoundException if source file does not exist.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid HTML document.
    */
-  Document loadHTMLNS(File file) throws IllegalArgumentException, FileNotFoundException;
+  Document loadHTMLNS(File file) throws IOException, SAXException;
 
   /**
    * Load HTML document from file using specified character set. Returned document is not name space aware.
    * 
-   * @param file source file,
-   * @param encoding character set user to parse file content.
+   * @param file not null, ordinary, source file.
+   * @param encoding character set user to parse file content, null or empty not accepted.
    * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not an ordinary file.
-   * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
-   * @throws FileNotFoundException if source file does not exist.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid HTML document.
    */
-  Document loadHTML(File file, String encoding) throws IllegalArgumentException, FileNotFoundException;
+  Document loadHTML(File file, String encoding) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from source file, using specified character set.
    * 
-   * @param file source file,
-   * @param encoding character set user to parse file content.
+   * @param file not null, ordinary, source file.
+   * @param encoding character set user to parse file content, null or empty not accepted.
    * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>file</code> argument is null or is not an ordinary file.
-   * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
-   * @throws FileNotFoundException if source file does not exist.
+   * @throws IOException if source file not found or reading fails.
+   * @throws SAXException if source file is not a valid HTML document.
    */
-  Document loadHTMLNS(File file, String encoding) throws IllegalArgumentException, FileNotFoundException;
+  Document loadHTMLNS(File file, String encoding) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load HTML document from input stream
@@ -263,8 +242,10 @@ public interface DocumentBuilder
    * @param stream input bytes stream.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>stream</code> is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(InputStream stream) throws IllegalArgumentException;
+  Document loadHTML(InputStream stream) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from bytes stream, using UTF-8 character set. Input stream is closed
@@ -273,8 +254,10 @@ public interface DocumentBuilder
    * @param stream input bytes stream.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>stream</code> is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(InputStream stream) throws IllegalArgumentException;
+  Document loadHTMLNS(InputStream stream) throws IOException, SAXException;
 
   /**
    * Load HTML document from bytes stream using specified character set. Input stream is closed after document load.
@@ -284,8 +267,10 @@ public interface DocumentBuilder
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>stream</code> is null.
    * @throws IllegalArgumentException if <code>encoding</code> is null or empty.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(InputStream stream, String encoding) throws IllegalArgumentException;
+  Document loadHTML(InputStream stream, String encoding) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from bytes stream, using specified character set. Input stream is closed
@@ -296,8 +281,10 @@ public interface DocumentBuilder
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>stream</code> is null.
    * @throws IllegalArgumentException if <code>encoding</code> is null or empty.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(InputStream stream, String encoding) throws IllegalArgumentException;
+  Document loadHTMLNS(InputStream stream, String encoding) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load HTML document from reader
@@ -309,8 +296,10 @@ public interface DocumentBuilder
    * @param reader input characters stream.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>reader</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(Reader reader) throws IllegalArgumentException;
+  Document loadHTML(Reader reader) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from characters stream, using UTF-8 character set. Source reader is
@@ -319,8 +308,10 @@ public interface DocumentBuilder
    * @param reader input characters stream.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>reader</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(Reader reader) throws IllegalArgumentException;
+  Document loadHTMLNS(Reader reader) throws IOException, SAXException;
 
   /**
    * Load HTML document from characters stream using specified character set. Returned document is not name space aware.
@@ -331,8 +322,10 @@ public interface DocumentBuilder
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>reader</code> argument is null.
    * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(Reader reader, String encoding) throws IllegalArgumentException;
+  Document loadHTML(Reader reader, String encoding) throws IOException, SAXException;
 
   /**
    * Load HTML document with name space support from characters stream, using specified character set. Source reader is
@@ -343,55 +336,10 @@ public interface DocumentBuilder
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>reader</code> argument is null.
    * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(Reader reader, String encoding) throws IllegalArgumentException;
-
-  // ----------------------------------------------------
-  // load HTML document from input source
-
-  /**
-   * Load HTML document from input source using UTF-8 character set. Returned document is not name space aware. Input
-   * source is closed after document load.
-   * 
-   * @param source input source.
-   * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   */
-  Document loadHTML(InputSource source) throws IllegalArgumentException;
-
-  /**
-   * Load HTML document with name space support from input source, using UTF-8 character set. Input source is closed
-   * after document load.
-   * 
-   * @param source input source.
-   * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   */
-  Document loadHTMLNS(InputSource source) throws IllegalArgumentException;
-
-  /**
-   * Load HTML document from input source using specified character set. Returned document is not name space aware.
-   * Input source is closed after document load.
-   * 
-   * @param source input source,
-   * @param encoding character set used to parse input source.
-   * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
-   */
-  Document loadHTML(InputSource source, String encoding) throws IllegalArgumentException;
-
-  /**
-   * Load HTML document with name space support from input source, using specified character set. Input source is closed
-   * after document load.
-   * 
-   * @param source input source,
-   * @param encoding character set used to parse input source.
-   * @return newly created HTML document.
-   * @throws IllegalArgumentException if <code>source</code> argument is null.
-   * @throws IllegalArgumentException if <code>encoding</code> argument is null or empty.
-   */
-  Document loadHTMLNS(InputSource source, String encoding) throws IllegalArgumentException;
+  Document loadHTMLNS(Reader reader, String encoding) throws IOException, SAXException;
 
   // ----------------------------------------------------
   // load HTML document from URL
@@ -402,8 +350,10 @@ public interface DocumentBuilder
    * @param url source URL.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(URL url) throws IllegalArgumentException;
+  Document loadHTML(URL url) throws IOException, SAXException;
 
   /**
    * Load HTML document from source URL using specified encoding.
@@ -412,8 +362,10 @@ public interface DocumentBuilder
    * @param encoding character set used to parse source URL.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTML(URL url, String encoding) throws IllegalArgumentException;
+  Document loadHTML(URL url, String encoding) throws IOException, SAXException;
 
   /**
    * Load HTML document with support for name spaces, from source URL using UTF-8 encoding.
@@ -421,8 +373,10 @@ public interface DocumentBuilder
    * @param url source URL.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(URL url) throws IllegalArgumentException;
+  Document loadHTMLNS(URL url) throws IOException, SAXException;
 
   /**
    * Load HTML document with support for name spaces, from source URL using specified encoding.
@@ -431,6 +385,8 @@ public interface DocumentBuilder
    * @param encoding character set used to parse source URL.
    * @return newly created HTML document.
    * @throws IllegalArgumentException if <code>url</code> argument is null.
+   * @throws SAXException 
+   * @throws IOException 
    */
-  Document loadHTMLNS(URL url, String encoding) throws IllegalArgumentException;
+  Document loadHTMLNS(URL url, String encoding) throws IOException, SAXException;
 }
