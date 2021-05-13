@@ -461,6 +461,16 @@ public interface Element
   String getCaseSensitiveTag();
 
   /**
+   * Rename this element, i.e. change this element tag name.For XML documents tag name is case sensitive whereas for
+   * XHTML is not.
+   * 
+   * @param tagName new tag name.
+   * @return this object.
+   * @since 1.2
+   */
+  Element renameElement(String tagName);
+
+  /**
    * Set named attribute value. Set the attribute value, creating it if not already present. Empty value is accepted in
    * which case attribute is still created, if not exists, but its value will be empty.
    * 
