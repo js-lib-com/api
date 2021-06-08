@@ -352,21 +352,28 @@ public interface Document
    */
   EList findByAttrNS(String namespaceURI, String name, String... value);
 
-  /**
-   * Serialize this document to standard output.
-   */
+  /** Serialize this document to standard output. Mainly for quick debugging. */
   void dump();
 
   /**
    * Serialize this document and optionally close destination writer. Serialize this document to given writer. If
-   * optional <code>closeWriter</code> flag is present and is true closes destination writer after serialization
+   * optional <code>close-writer</code> flag is present and is true closes destination writer after serialization
    * completes.
+   * <p>
+   * This method supports a variable number of optional flags. All flags have sensible default value and can be missing.
+   * Also flags order matters. Here are the flags supported by current implementation:
+   * <ul>
+   * <li>close-write: boolean flag, default to false. If true close the writer after serialization complete.
+   * <li>xml-declaration: boolean flag, default to true. Controls if XML declaration is included before document root.
+   * If this flag is false XML declaration is not included into serialized XML stream.
+   * </ul>
+   * It is the caller responsibility to provide correct flags order and type.
    * 
    * @param writer destination writer,
-   * @param closeWriter optional flag, if true close destination writer.
+   * @param flags variable number of optional flags.
    * @throws IOException if writing operation fails.
    */
-  void serialize(Writer writer, boolean... closeWriter) throws IOException;
+  void serialize(Writer writer, Object... flags) throws IOException;
 
   /**
    * Remove namespace declaration for requested namespace URI. Usually there is a single namespace declaration on a XML
@@ -380,6 +387,7 @@ public interface Document
    * DOM keeps the namespace URI to avoid dependency on user defined prefix.
    * 
    * @param namespaceURI namespace URI.
+   * @since 1.2
    */
   void removeNamespaceDeclaration(String namespaceURI);
 }
