@@ -478,10 +478,15 @@ public interface Element
   Element setAttr(String name, String value);
 
   /**
-   * Locate attribute with given prefixed name and requested namespace and set its value. It is caller responsibility to
-   * ensure that namespace URI and attribute name prefix match. For example if there is a namespace declaration
-   * <code>xmlns:w="js-lib.com/wood"</code>, namespace URI parameter should be <code>js-lib.com/wood</code> and
-   * attribute name parameter something like <code>w:name</code>.
+   * Locate or create attribute with given prefixed name and requested namespace and set its value. It is caller
+   * responsibility to ensure that namespace URI and attribute name prefix match. For example if there is a namespace
+   * declaration <code>xmlns:w="js-lib.com/wood"</code>, namespace URI parameter should be <code>js-lib.com/wood</code>
+   * and attribute name parameter something like <code>w:name</code>.
+   * <p>
+   * Above described behaviour for attribute name is consistent with W3C specifications but this method supports a
+   * simplified syntax. If attribute already exists and if there is a single prefix used for the given namespace URI,
+   * the prefix from attribute name can be missing, in which case attribute is located by namespace URI and local name.
+   * Anyway, if attribute is missing and should be created prefix is mandatory.
    * <p>
    * Create attribute if not already present. Empty attribute value is accepted in which case attribute is still
    * created, if not exists, but its value will be empty.
@@ -493,8 +498,9 @@ public interface Element
    * @param name prefixed attribute name,
    * @param value attribute value, empty accepted.
    * @return this object.
+   * @throws IllegalArgumentException if attempt to create new attribute with missing prefix.
    */
-  Element setAttrNS(String namespaceURI, String name, String value);
+  Element setAttrNS(String namespaceURI, String name, String value) throws IllegalArgumentException;
 
   /**
    * Set one or more attribute values. This method parameters are variable number of name/value pair for every desired
