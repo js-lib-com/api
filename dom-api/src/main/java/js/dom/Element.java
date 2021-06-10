@@ -1,7 +1,5 @@
 package js.dom;
 
-import java.io.IOException;
-
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
@@ -309,7 +307,6 @@ public interface Element
    * 
    * @param cssClass CSS class.
    * @return descendant element with requested CSS class or null.
-   * @throws IllegalArgumentException if CSS class parameter is null or empty.
    */
   Element getByCssClass(String cssClass);
 
@@ -477,23 +474,25 @@ public interface Element
    * @param name attribute name,
    * @param value attribute value, empty accepted.
    * @return this object.
-   * @throws IllegalArgumentException if <code>name</code> parameter is null or empty or <code>value</code> parameter is
-   *           null.
    */
   Element setAttr(String name, String value);
 
   /**
-   * Locate attribute with given local name into requested namespace and set its value. Create attribute if not already
-   * present. Empty value is accepted in which case attribute is still created, if not exists, but its value will be
-   * empty.
+   * Locate attribute with given prefixed name and requested namespace and set its value. It is caller responsibility to
+   * ensure that namespace URI and attribute name prefix match. For example if there is a namespace declaration
+   * <code>xmlns:w="js-lib.com/wood"</code>, namespace URI parameter should be <code>js-lib.com/wood</code> and
+   * attribute name parameter something like <code>w:name</code>.
+   * <p>
+   * Create attribute if not already present. Empty attribute value is accepted in which case attribute is still
+   * created, if not exists, but its value will be empty.
    * <p>
    * Null namespace is considered default scope, that is, elements without any prefix in which case this method
    * degenerates to {@link #setAttr(String, String)} counterpart.
    * 
    * @param namespaceURI namespace URI,
-   * @param name attribute local name,
+   * @param name prefixed attribute name,
    * @param value attribute value, empty accepted.
-   * @return this object. null.
+   * @return this object.
    */
   Element setAttrNS(String namespaceURI, String name, String value);
 
@@ -515,7 +514,7 @@ public interface Element
   /**
    * Set one or more attribute values within given namespace. This method parameters are variable number of name/value
    * pair for every desired argument. Is caller responsibility to ensure name/value is completely supplied and in the
-   * proper order.
+   * proper order. See {@link #setAttrNS(String, String, String)} for attribute name format.
    * 
    * <pre>
    * el.setAttrNS(&quot;id&quot;, &quot;123&quot;, &quot;type&quot;, &quot;text&quot;);
@@ -646,8 +645,9 @@ public interface Element
    * 
    * @param richText rich text.
    * @return this element.
+   * @throws SAXException if text parameter is not a valid XML fragment.
    */
-  Element setRichText(String richText) throws IOException, SAXException;
+  Element setRichText(String richText) throws SAXException;
 
   /**
    * Get this element rich text content. In this method context rich text is a text with format tags like
