@@ -47,6 +47,11 @@ import js.lang.ConfigException;
  * }, person);
  * </pre>
  * 
+ * Working unit is parameterized with resource manager type. In example resource manager is a Hibernate session object
+ * but resource manager type depends on persistence engine implementation. For example on Hibernate is named
+ * <code>session</code>, on JDBC is <code>connection</code> - actually a resource manager connection, while on JPA is
+ * named <code>entity manager</code>.
+ * 
  * <p>
  * Finally, for really special cases one can handle transactions manually but must follow next usage pattern. Note close
  * from final block.
@@ -66,7 +71,6 @@ import js.lang.ConfigException;
  * </pre>
  * 
  * @author Iulian Rotaru
- * @version final
  */
 public interface TransactionManager
 {
@@ -116,8 +120,8 @@ public interface TransactionManager
   Transaction createTransaction(String schema);
 
   /**
-   * Create a read-only transaction instance. This is a variant of {@link #createTransaction(String)} optimized for read-only
-   * transactions.
+   * Create a read-only transaction instance. This is a variant of {@link #createTransaction(String)} optimized for
+   * read-only transactions.
    * 
    * @param schema optional transactional schema, null if not used.
    * @return newly create transaction instance.
@@ -131,18 +135,21 @@ public interface TransactionManager
    * processing.
    * 
    * <pre>
-   * Address address = (Address)TransactionManager.exec(new WorkingUnit()
+   * Address address = TransactionManager.exec("core", new WorkingUnit<Session, Address>()
    * {
-   *   public Object exec(Object... args) throws Exception
+   *   public Address exec(Session session, Object... args) throws Exception
    *   {
    *     Person person = (Person)args[0];
-   *     ...
-   *     return new Address();
+   *     Address address = session.get(Address.class, person.getAddressId());
+   *     return address;
    *   }
    * }, person);
    * </pre>
    * 
-   * See {@link WorkingUnit} interface.
+   * Working unit is parameterized with resource manager type. In example resource manager is a Hibernate session object
+   * but resource manager type depends on persistence engine implementation. For example on Hibernate is named
+   * <code>session</code>, on JDBC is <code>connection</code> while on JPA is named <code>entity manager</code>. See
+   * {@link WorkingUnit} interface.
    * <p>
    * When create a transaction is possible to request a specific transactional schema. This limits the scope of
    * transactional resource objects that can be accessed from transaction. If not provided created transaction used
@@ -152,13 +159,13 @@ public interface TransactionManager
    * @param schema optional transactional schema, null if not used.
    * @param workingUnit workingUnit to be executed transactional,
    * @param args variable arguments list to be passed to {@link WorkingUnit#exec(Object, Object...)}.
-   * @param <S> session object type.
-   * @param <T> working unit returned type.
-   * @return the object returned by executed working unit.
+   * @param <R> resource manager type for working unit.
+   * @param <T> the type of the working unit returned value.
+   * @return the value returned by executed working unit.
    * @throws TransactionException if working unit execution fails in some way. Note that the root cause is set to the
    *           actual working unit exception.
    */
-  <S, T> T exec(String schema, WorkingUnit<S, T> workingUnit, Object... args) throws TransactionException;
+  <R, T> T exec(String schema, WorkingUnit<R, T> workingUnit, Object... args) throws TransactionException;
 
   /**
    * Convenient alternative of {@link #exec(String, WorkingUnit, Object...)} when use default / global transactional
@@ -166,13 +173,13 @@ public interface TransactionManager
    * 
    * @param workingUnit workingUnit to be executed transactional,
    * @param args variable arguments list to be passed to {@link WorkingUnit#exec(Object, Object...)}.
-   * @param <S> session object type.
-   * @param <T> working unit returned type.
+   * @param <R> resource manager type for working unit.
+   * @param <T> the type of the working unit returned value.
    * @return the object returned by executed working unit.
    * @throws TransactionException if working unit execution fails in some way. Note that the root cause is set to the
    *           actual working unit exception.
    */
-  <S, T> T exec(WorkingUnit<S, T> workingUnit, Object... args) throws TransactionException;
+  <R, T> T exec(WorkingUnit<R, T> workingUnit, Object... args) throws TransactionException;
 
   /** Release transactional resources. */
   void destroy();
