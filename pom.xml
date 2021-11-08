@@ -12,6 +12,8 @@
 		<module>json-api</module>
 		<module>template-api</module>
 		<module>transaction-api</module>
+		<module>java-ee-api</module>
+		<module>servlet-api</module>
 	</modules>
 
 	<name>j(s)-lib APIs</name>
