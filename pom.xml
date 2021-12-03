@@ -15,6 +15,7 @@
 		<module>java-ee-api</module>
 		<module>servlet-api</module>
 		<module>app-container-api</module>
+		<module>injector-api</module>
 	</modules>
 
 	<name>j(s)-lib APIs</name>
