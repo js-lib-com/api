@@ -7,6 +7,6 @@
 	</parent>
 	<artifactId>js-json-api</artifactId>
 
-	<name>JSON Deserializer API</name>
-	<description>JSON desrialized based on ECMA Script counterpart.</description>
+	<name>JSON (De)Serializer API</name>
+	<description>JSON (de)serialized based on ECMA Script counterpart.</description>
 </project>
