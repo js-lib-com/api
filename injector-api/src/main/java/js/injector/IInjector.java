@@ -16,11 +16,20 @@ public interface IInjector
 
   static IInjector create(IModule... modules)
   {
-    IInjector injector = Classes.loadService(IInjector.class);
-    injector.configure(modules);
-    return injector;
+    return Classes.loadService(IInjector.class).configure(modules);
   }
 
+  /**
+   * Configure injector bindings from modules. Although public this interface is designed for internal use by factory
+   * method, see {@link #create(IModule...)}.
+   * 
+   * Once configured, an injector instance is immutable. Implementation should throw illegal state if attempt to
+   * configure an injector instance multiple times.
+   * 
+   * @param modules variable number of modules.
+   * @return this pointer.
+   * @throws IllegalStateException if attempt to configure an injector instance multiple times.
+   */
   IInjector configure(IModule... modules);
 
   <T> IBindingBuilder<T> getBindingBuilder(Class<T> type);
