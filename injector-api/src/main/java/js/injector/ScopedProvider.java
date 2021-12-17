@@ -1,5 +1,7 @@
 package js.injector;
 
+import java.lang.annotation.Annotation;
+
 import javax.inject.Provider;
 
 /**
@@ -46,5 +48,8 @@ public abstract class ScopedProvider<T> implements Provider<T>
     return provisioningProvider;
   }
 
+  public abstract Class<? extends Annotation> getScope();
+  
   public abstract T getScopeInstance();
+  
 }

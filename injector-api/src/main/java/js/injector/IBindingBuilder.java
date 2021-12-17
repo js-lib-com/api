@@ -51,10 +51,10 @@ public interface IBindingBuilder<T>
   /**
    * Set binding implementation class.
    * 
-   * @param type
+   * @param implementationClass
    * @return
    */
-  IBindingBuilder<T> to(Class<? extends T> type);
+  IBindingBuilder<T> to(Class<? extends T> implementationClass);
 
   /** Compatible variant for {@link #to(Class)}. */
   default IBindingBuilder<T> toInstance(T instance)
