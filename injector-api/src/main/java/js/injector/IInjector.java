@@ -3,6 +3,7 @@ package js.injector;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Named;
+import javax.inject.Provider;
 
 import js.util.Classes;
 
@@ -16,11 +17,20 @@ public interface IInjector
 
   static IInjector create(IModule... modules)
   {
-    IInjector injector = Classes.loadService(IInjector.class);
-    injector.configure(modules);
-    return injector;
+    return Classes.loadService(IInjector.class).configure(modules);
   }
 
+  /**
+   * Configure injector bindings from modules. Although public this interface is designed for internal use by factory
+   * method, see {@link #create(IModule...)}.
+   * 
+   * Once configured, an injector instance is immutable. Implementation should throw illegal state if attempt to
+   * configure an injector instance multiple times.
+   * 
+   * @param modules variable number of modules.
+   * @return this pointer.
+   * @throws IllegalStateException if attempt to configure an injector instance multiple times.
+   */
   IInjector configure(IModule... modules);
 
   <T> IBindingBuilder<T> getBindingBuilder(Class<T> type);
@@ -60,16 +70,7 @@ public interface IInjector
    */
   <T> T getInstance(Class<T> type, String name);
 
-  /**
-   * Get cached instance from a scope provider or null on cache miss. This method should not trigger cache update on
-   * target scoped provider. It is merely intended to detect if cache has an instance for requested type. Return also
-   * null if there are no bindings for requested type.
-   * 
-   * @param type instance type.
-   * @return cached instance or null on cache miss.
-   * @param <T> generic instance type.
-   */
-  <T> T getScopeInstance(Class<T> type);
+  <T> Provider<T> getProvider(Class<T> type);
 
   void bindListener(IProvisionListener provisionListener);
 
@@ -77,14 +78,13 @@ public interface IInjector
 
   <T> void fireEvent(IProvisionInvocation<T> provisionInvocation);
 
-  <T> void bindScope(Class<? extends Annotation> annotation, IScope<T> scope);
+  <T> void bindScopeFactory(Class<? extends Annotation> scope, IScopeFactory<T> scopeFactory);
 
-  <T> IScope<T> getScope(Class<? extends Annotation> annotation);
+  <T> IScopeFactory<T> getScopeFactory(Class<? extends Annotation> scope);
 
   /**
    * Clear caches. Although public, this method is not intended for clients business code. It is designed for testing
    * code, providing means to decouple test cases that otherwise would mix up via static caches.
    */
   void clearCache();
-
 }

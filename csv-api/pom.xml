@@ -6,8 +6,9 @@
 		<version>2.1</version>
 	</parent>
 	<artifactId>js-csv-api</artifactId>
+	<version>1.4</version>
 	
-	<name>CSV Deserializer API</name>
+	<name>CSV (De)Serializer API</name>
 	<description>CSV streams reader and writer.</description>
 
 	<dependencies>

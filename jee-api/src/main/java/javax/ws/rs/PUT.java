@@ -1,14 +1,14 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2006-2010 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010-2013 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
  * and Distribution License("CDDL") (collectively, the "License").  You
  * may not use this file except in compliance with the License.  You can
  * obtain a copy of the License at
- * https://glassfish.dev.java.net/public/CDDL+GPL_1_1.html
+ * http://glassfish.java.net/public/CDDL+GPL_1_1.html
  * or packager/legal/LICENSE.txt.  See the License for the specific
  * language governing permissions and limitations under the License.
  *
@@ -37,44 +37,25 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
+package javax.ws.rs;
 
-package javax.ejb;
-
-import java.lang.annotation.Target;
-import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Component-defining annotation for a singleton session bean.
+ * Indicates that the annotated method responds to HTTP PUT requests.
  *
- * @since EJB 3.1
+ * @author Paul Sandoz
+ * @author Marc Hadley
+ * @see HttpMethod
+ * @since 1.0
  */
-
-@Target(TYPE) 
-@Retention(RUNTIME)
-public @interface Singleton {
-
-    /**
-     * The ejb-name for this bean.  Defaults to the unqualified name of
-     * the singleton session bean class.
-     */
-    String name() default "";
-
-    /**
-      * A product specific name(for example, global JNDI name) 
-      * that this session bean should be mapped to.  
-      * 
-      * Application servers are not required to support any particular 
-      * form or type of mapped name, nor the ability to use mapped names. 
-      * The mapped name is product-dependent and often installation-dependent. 
-      * No use of a mapped name is portable. 
-      */ 
-    String mappedName() default "";
-
-    /**
-     * A string describing the singleton session bean.
-     */ 
-    String description() default "";
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@HttpMethod(HttpMethod.PUT)
+@Documented
+public @interface PUT {
 }
-
