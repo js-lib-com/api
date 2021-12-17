@@ -12,7 +12,7 @@
 		<module>json-api</module>
 		<module>template-api</module>
 		<module>transaction-api</module>
-		<module>java-ee-api</module>
+		<module>jee-api</module>
 		<module>servlet-api</module>
 		<module>app-container-api</module>
 		<module>injector-api</module>
