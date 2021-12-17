@@ -14,7 +14,7 @@
 		<module>transaction-api</module>
 		<module>jee-api</module>
 		<module>servlet-api</module>
-		<module>app-container-api</module>
+		<module>embedded-container-api</module>
 		<module>injector-api</module>
 	</modules>
 

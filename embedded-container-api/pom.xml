@@ -5,7 +5,7 @@
 		<artifactId>api</artifactId>
 		<version>2.1</version>
 	</parent>
-	<artifactId>app-container-api</artifactId>
+	<artifactId>embedded-container-api</artifactId>
 	<version>1.0</version>
 
 	<name>Embedded Container API</name>

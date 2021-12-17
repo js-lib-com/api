@@ -1,4 +1,4 @@
-package js.app.container;
+package js.embedded.container;
 
 import java.util.ServiceLoader;
 
@@ -7,28 +7,28 @@ import java.util.ServiceLoader;
  * dependency injection based on <code>javax.inject</code> API and additional container services declared on business
  * classes using annotations. After using embedded container it should be closed in order to release system resources.
  * 
- * This interface also provides a bootstrap method that discover {@link AppContainerProvider} deployed on runtime and
+ * This interface also provides a bootstrap method that discover {@link EmbeddedContainerProvider} deployed on runtime and
  * load it via Java services loader. If more applications containers found choose silently one. It is provider
  * implementation responsibility to ensure that returned application container is initialized.
  * 
  * @author Iulian Rotaru
  */
-public interface AppContainer extends AutoCloseable
+public interface EmbeddedContainer extends AutoCloseable
 {
 
   /**
-   * Discover application container provider and execute {@link AppContainerProvider#createAppContainer(Object...)}.
+   * Discover application container provider and execute {@link EmbeddedContainerProvider#createAppContainer(Object...)}.
    * Arguments are passed as they are to provider factory method.
    * 
    * @param arguments variable number of arguments.
    * @return application container instance, fully initialized.
    */
-  static AppContainer create(Object... arguments)
+  static EmbeddedContainer create(Object... arguments)
   {
-    for(AppContainerProvider provider : ServiceLoader.load(AppContainerProvider.class)) {
+    for(EmbeddedContainerProvider provider : ServiceLoader.load(EmbeddedContainerProvider.class)) {
       return provider.createAppContainer(arguments);
     }
-    throw new AppContainerNotFoundException();
+    throw new EmbeddedContainerNotFoundException();
   }
 
   /**
