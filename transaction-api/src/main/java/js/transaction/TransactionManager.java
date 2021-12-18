@@ -75,17 +75,22 @@ import js.lang.ConfigException;
 public interface TransactionManager
 {
   /**
-   * Configure this transaction manager using a given configuration object. Configuration object is clearly dependent on
-   * specific implementation; it is implementation responsibility to ensure configuration object is valid, accordingly
-   * its internal rules. If validation fails implementation should throw {@link ConfigException}.
-   * <p>
+   * Configure this transaction manager using a given configuration object. This interface is optional. Implementation
+   * may choose to load configurations using specific means, e.g. JPA uses '/META-INF/persistence.xml' file.
+   * 
+   * Configuration object is clearly dependent on specific implementation; it is implementation responsibility to ensure
+   * configuration object is valid, accordingly its internal rules. If validation fails implementation should throw
+   * {@link ConfigException}.
+   * 
    * Configuration object can be null, in which case implementation should use some default properties or collect
    * configuration from specific means.
    * 
    * @param config configuration object, possible null.
    * @throws ConfigException if given configuration object is not valid.
    */
-  void config(Config config) throws ConfigException;
+  default void config(Config config) throws ConfigException
+  {
+  }
 
   /**
    * Create a new transaction instance. Creating a transaction instance begins the transactional scope and is mandatory
