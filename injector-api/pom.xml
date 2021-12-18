@@ -5,7 +5,7 @@
 		<artifactId>api</artifactId>
 		<version>2.1</version>
 	</parent>
-	<artifactId>injector-api</artifactId>
+	<artifactId>js-injector-api</artifactId>
 	<version>1.0</version>
 
 	<name>Injector API</name>
