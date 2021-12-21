@@ -82,9 +82,4 @@ public interface IInjector
 
   <T> IScopeFactory<T> getScopeFactory(Class<? extends Annotation> scope);
 
-  /**
-   * Clear caches. Although public, this method is not intended for clients business code. It is designed for testing
-   * code, providing means to decouple test cases that otherwise would mix up via static caches.
-   */
-  void clearCache();
 }
