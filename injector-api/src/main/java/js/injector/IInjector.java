@@ -17,7 +17,11 @@ public interface IInjector
 
   static IInjector create(IModule... modules)
   {
-    return Classes.loadService(IInjector.class).configure(modules);
+    IInjector injector = Classes.loadService(IInjector.class);
+    if(modules.length > 0) {
+      injector.configure(modules);
+    }
+    return injector;
   }
 
   /**
