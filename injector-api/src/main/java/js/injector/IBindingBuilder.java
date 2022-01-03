@@ -3,8 +3,8 @@ package js.injector;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 
-import javax.inject.Provider;
-import javax.inject.Scope;
+import jakarta.inject.Provider;
+import jakarta.inject.Scope;
 
 /**
  * Chained builder used by module configuration to collect binding parameters.
@@ -101,7 +101,7 @@ public interface IBindingBuilder<T>
    *           provider.
    */
   IBindingBuilder<T> in(Class<? extends Annotation> scope) throws IllegalStateException;
-  
+
   Provider<T> getProvider();
 
   IBinding<T> getBinding();

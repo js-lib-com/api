@@ -2,9 +2,8 @@ package js.injector;
 
 import java.lang.annotation.Annotation;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 import js.util.Classes;
 
 /**

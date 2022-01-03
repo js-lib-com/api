@@ -2,8 +2,7 @@ package js.injector;
 
 import java.lang.annotation.Annotation;
 
-import javax.inject.Named;
-
+import jakarta.inject.Named;
 import js.util.Strings;
 
 /**
