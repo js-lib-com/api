@@ -72,6 +72,12 @@ public class Key<T>
     this.type = type;
   }
 
+  private Key(Class<T> type, Object qualifier)
+  {
+    this.type = type;
+    this.qualifier = qualifier;
+  }
+
   private Key(Class<T> type, Annotation qualifier)
   {
     this.type = type;
@@ -83,12 +89,7 @@ public class Key<T>
     this.type = type;
     this.qualifier = qualifier;
   }
-
-  public Class<T> type()
-  {
-    return type;
-  }
-
+  
   public void setQualifier(Annotation qualifier)
   {
     this.qualifier = qualifier;
@@ -97,6 +98,15 @@ public class Key<T>
   public void setQualifier(Class<? extends Annotation> qualifier)
   {
     this.qualifier = qualifier;
+  }
+
+  public Class<T> type()
+  {
+    return type;
+  }
+
+  public <K> Key<K> forType(Class<K> type) {
+    return new Key<K>(type, this.qualifier);
   }
 
   /**
@@ -151,5 +161,4 @@ public class Key<T>
   {
     return Strings.toString(type, qualifier);
   }
-
 }
