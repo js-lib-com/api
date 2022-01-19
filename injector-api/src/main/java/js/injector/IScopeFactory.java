@@ -1,6 +1,6 @@
 package js.injector;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 /**
  * Factory for scoped providers that create reusable instances.

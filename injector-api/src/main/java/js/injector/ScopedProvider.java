@@ -2,7 +2,7 @@ package js.injector;
 
 import java.lang.annotation.Annotation;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 /**
  * Scoped provider is a cache for instances used when certain conditions are met. It wraps a provisioning provider that
@@ -49,7 +49,7 @@ public abstract class ScopedProvider<T> implements Provider<T>
   }
 
   public abstract Class<? extends Annotation> getScope();
-  
+
   public abstract T getScopeInstance();
-  
+
 }

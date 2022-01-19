@@ -66,7 +66,7 @@ public abstract class NamespaceContext implements javax.xml.namespace.NamespaceC
 	 * @throws IllegalArgumentException if <code>namespaceURI</code> is null.
 	 */
 	@Override
-	public Iterator<?> getPrefixes(String namespaceURI) {
+	public Iterator<String> getPrefixes(String namespaceURI) {
 		return null;
 	}
 }

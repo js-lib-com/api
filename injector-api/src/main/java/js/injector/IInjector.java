@@ -2,9 +2,8 @@ package js.injector;
 
 import java.lang.annotation.Annotation;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 import js.util.Classes;
 
 /**
@@ -17,7 +16,11 @@ public interface IInjector
 
   static IInjector create(IModule... modules)
   {
-    return Classes.loadService(IInjector.class).configure(modules);
+    IInjector injector = Classes.loadService(IInjector.class);
+    if(modules.length > 0) {
+      injector.configure(modules);
+    }
+    return injector;
   }
 
   /**
@@ -82,9 +85,4 @@ public interface IInjector
 
   <T> IScopeFactory<T> getScopeFactory(Class<? extends Annotation> scope);
 
-  /**
-   * Clear caches. Although public, this method is not intended for clients business code. It is designed for testing
-   * code, providing means to decouple test cases that otherwise would mix up via static caches.
-   */
-  void clearCache();
 }

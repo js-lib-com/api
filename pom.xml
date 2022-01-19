@@ -14,7 +14,7 @@
 		<module>transaction-api</module>
 		<module>jee-api</module>
 		<module>servlet-api</module>
-		<module>app-container-api</module>
+		<module>embedded-container-api</module>
 		<module>injector-api</module>
 	</modules>
 
@@ -117,11 +117,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>js-lib</id>
-			<url>http://maven.js-lib.com/</url>
+			<url>https://maven.js-lib.com/</url>
 		</snapshotRepository>
 		<repository>
 			<id>js-lib</id>
-			<url>http://maven.js-lib.com/</url>
+			<url>https://maven.js-lib.com/</url>
 		</repository>
 	</distributionManagement>
 </project>

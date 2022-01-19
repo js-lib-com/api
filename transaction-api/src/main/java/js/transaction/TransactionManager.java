@@ -1,8 +1,5 @@
 package js.transaction;
 
-import js.lang.Config;
-import js.lang.ConfigException;
-
 /**
  * Transaction manager is a factory for transaction instances. Transaction manager is more a service provider interface
  * used by containers to provide declarative transactions. Usually user space code has no need to interact with
@@ -74,19 +71,6 @@ import js.lang.ConfigException;
  */
 public interface TransactionManager
 {
-  /**
-   * Configure this transaction manager using a given configuration object. Configuration object is clearly dependent on
-   * specific implementation; it is implementation responsibility to ensure configuration object is valid, accordingly
-   * its internal rules. If validation fails implementation should throw {@link ConfigException}.
-   * <p>
-   * Configuration object can be null, in which case implementation should use some default properties or collect
-   * configuration from specific means.
-   * 
-   * @param config configuration object, possible null.
-   * @throws ConfigException if given configuration object is not valid.
-   */
-  void config(Config config) throws ConfigException;
-
   /**
    * Create a new transaction instance. Creating a transaction instance begins the transactional scope and is mandatory
    * to be concluded by close, as in sample code. Creating transactions and failing to close them will exhaust

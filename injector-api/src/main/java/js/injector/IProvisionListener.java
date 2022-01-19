@@ -1,7 +1,8 @@
 package js.injector;
 
-public interface IProvisionListener {
+public interface IProvisionListener
+{
 
-	<T> void onProvision(IProvisionInvocation<T> provisionInvocation);
+  <T> void onProvision(IProvisionInvocation<T> provisionInvocation);
 
 }

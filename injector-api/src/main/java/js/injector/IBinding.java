@@ -1,16 +1,17 @@
 package js.injector;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 /**
  * A mapping between an instance key and an instance provider.
  * 
  * @author Iulian Rotaru
  */
-public interface IBinding<T> {
+public interface IBinding<T>
+{
 
-	Key<T> key();
+  Key<T> key();
 
-	Provider<T> provider();
+  Provider<T> provider();
 
 }
