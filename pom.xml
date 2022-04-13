@@ -2,20 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.js-lib</groupId>
 	<artifactId>api</artifactId>
-	<version>2.1</version>
+	<version>2.2</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>csv-api</module>
-		<module>dom-api</module>
-		<module>email-api</module>
-		<module>json-api</module>
-		<module>template-api</module>
-		<module>transaction-api</module>
-		<module>jee-api</module>
-		<module>servlet-api</module>
-		<module>embedded-container-api</module>
-		<module>injector-api</module>
+		<module>api-csv</module>
+		<module>api-dom</module>
+		<module>api-email</module>
+		<module>api-embedded-container</module>
+		<module>api-injector</module>
+		<module>api-jee</module>
+		<module>api-json</module>
+		<module>api-servlet</module>
+		<module>api-template</module>
+		<module>api-transaction</module>
 	</modules>
 
 	<name>j(s)-lib APIs</name>

@@ -3,13 +3,13 @@
 	<parent>
 		<groupId>com.js-lib</groupId>
 		<artifactId>api</artifactId>
-		<version>2.1</version>
+		<version>2.2</version>
 	</parent>
-	<artifactId>js-csv-api</artifactId>
-	<version>1.4</version>
-	
-	<name>CSV (De)Serializer API</name>
-	<description>CSV streams reader and writer.</description>
+	<artifactId>js-email-api</artifactId>
+	<version>2.0</version>
+
+	<name>Email Sender API</name>
+	<description>Chained interface able to send an email in a single line of code.</description>
 
 	<dependencies>
 		<dependency>

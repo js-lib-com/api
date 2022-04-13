@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.js-lib</groupId>
 		<artifactId>api</artifactId>
-		<version>2.1</version>
+		<version>2.2</version>
 	</parent>
-	<artifactId>js-jee-api</artifactId>
-	<version>1.0</version>
+	<artifactId>js-dom-api</artifactId>
+	<version>1.2</version>
 
-	<name>JEE API</name>
-	<description>Reduced version of the JEE API, both Jakarta EE and legacy Java2 EE.</description>
+	<name>Simple DOM API</name>
+	<description>Simplified reincarnation of W3C DOM API for XML and XHTML documents.</description>
 </project>

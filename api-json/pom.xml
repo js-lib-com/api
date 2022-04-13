@@ -3,11 +3,10 @@
 	<parent>
 		<groupId>com.js-lib</groupId>
 		<artifactId>api</artifactId>
-		<version>2.1</version>
+		<version>2.2</version>
 	</parent>
-	<artifactId>js-dom-api</artifactId>
-	<version>1.2</version>
+	<artifactId>js-json-api</artifactId>
 
-	<name>Simple DOM API</name>
-	<description>Simplified reincarnation of W3C DOM API for XML and XHTML documents.</description>
+	<name>JSON (De)Serializer API</name>
+	<description>JSON (de)serialized based on ECMA Script counterpart.</description>
 </project>

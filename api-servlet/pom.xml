@@ -3,10 +3,10 @@
 	<parent>
 		<groupId>com.js-lib</groupId>
 		<artifactId>api</artifactId>
-		<version>2.1</version>
+		<version>2.2</version>
 	</parent>
 	<artifactId>js-servlet-api</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 
 	<name>Java Servlet API</name>
 	<description>Reduced version of the Java Servlet API.</description>
