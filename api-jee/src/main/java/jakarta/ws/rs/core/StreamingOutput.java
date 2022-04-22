@@ -19,7 +19,7 @@ package jakarta.ws.rs.core;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.WebApplicationException;
 
 /**
  * A type that may be used as a resource method return value or as the entity
