@@ -113,15 +113,4 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>js-lib</id>
-			<url>https://maven.js-lib.com/</url>
-		</snapshotRepository>
-		<repository>
-			<id>js-lib</id>
-			<url>https://maven.js-lib.com/</url>
-		</repository>
-	</distributionManagement>
 </project>
