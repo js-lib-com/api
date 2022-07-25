@@ -12,7 +12,6 @@
 		<module>api-embedded-container</module>
 		<module>api-injector</module>
 		<module>api-json</module>
-		<module>api-servlet</module>
 		<module>api-template</module>
 		<module>api-transaction</module>
 	</modules>
