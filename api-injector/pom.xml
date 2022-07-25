@@ -13,9 +13,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.js-lib</groupId>
-			<artifactId>js-jee-api</artifactId>
-			<version>1.1</version>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>9.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.js-lib</groupId>
