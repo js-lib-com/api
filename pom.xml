@@ -9,11 +9,8 @@
 		<module>api-csv</module>
 		<module>api-dom</module>
 		<module>api-email</module>
-		<module>api-embedded-container</module>
-		<module>api-injector</module>
 		<module>api-json</module>
 		<module>api-template</module>
-		<module>api-transaction</module>
 	</modules>
 
 	<name>j(s)-lib APIs</name>
