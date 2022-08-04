@@ -6,6 +6,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>api-log</module>
 		<module>api-csv</module>
 		<module>api-dom</module>
 		<module>api-email</module>
