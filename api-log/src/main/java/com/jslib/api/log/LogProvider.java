@@ -13,6 +13,8 @@ package com.jslib.api.log;
  */
 public interface LogProvider
 {
+  LogConfig getLogConfig();
+  
   /**
    * Get the instance of logger context usable to store diagnostic context data on current thread.
    * 
@@ -29,9 +31,8 @@ public interface LogProvider
   Log getLogger(String loggerName);
 
   /**
-   * Force all appenders to immediate flush all written messages to target media. This method is only one way; there is
-   * no option to undo its effect. It is intended to be called on container / application destruction to ensure there
-   * are no messages loss.
+   * Force immediate flush all log messages to target media and release resources, like threads for asynchronous
+   * appenders. It is intended to be called on container / application destruction to ensure there are no messages loss.
    */
-  void flush();
+  void close();
 }

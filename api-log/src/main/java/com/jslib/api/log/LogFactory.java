@@ -1,5 +1,6 @@
 package com.jslib.api.log;
 
+import java.net.URI;
 import java.util.ServiceLoader;
 
 /**
@@ -61,6 +62,11 @@ public final class LogFactory
     LogFactory.provider = provider;
   }
 
+  public static LogConfig getLogConfig()
+  {
+    return provider.getLogConfig();
+  }
+
   /**
    * Get logger context usable to bind diagnostic data to current thread.
    * 
@@ -97,11 +103,11 @@ public final class LogFactory
   }
 
   /**
-   * Flush provider asynchronous log writers. See {@link LogProvider#flush()}.
+   * Close provider. See {@link LogProvider#flush()}.
    */
-  public static void flush()
+  public static void close()
   {
-    provider.flush();
+    provider.close();
   }
 
   // ----------------------------------------------------------------------------------------------
@@ -113,8 +119,15 @@ public final class LogFactory
    */
   private static final class DefaultLogProvider implements LogProvider
   {
+    private final LogConfig config = new DefaultLogConfig();
     private final LogContext context = new DefaultLogContext();
     private final Log log = new DefaultLog();
+
+    @Override
+    public LogConfig getLogConfig()
+    {
+      return config;
+    }
 
     @Override
     public LogContext getLogContext()
@@ -129,7 +142,69 @@ public final class LogFactory
     }
 
     @Override
-    public void flush()
+    public void close()
+    {
+    }
+  }
+
+  private static final class DefaultLogConfig implements LogConfig
+  {
+    @Override
+    public void setServerAddress(URI address)
+    {
+    }
+
+    @Override
+    public URI getServerAddress()
+    {
+      return null;
+    }
+
+    @Override
+    public void setRootLevel(Level level)
+    {
+    }
+
+    @Override
+    public Level getRootLevel()
+    {
+      return null;
+    }
+
+    @Override
+    public void setLoggerLevel(String loggerName, Level level)
+    {
+    }
+
+    @Override
+    public Level getLoggerLevel(String loggerName)
+    {
+      return null;
+    }
+
+    @Override
+    public void clearLoggerLevel(String loggerName)
+    {
+    }
+
+    @Override
+    public void setFilter(String filter)
+    {
+    }
+
+    @Override
+    public String getFilter()
+    {
+      return null;
+    }
+
+    @Override
+    public void clearFilter()
+    {
+    }
+
+    @Override
+    public void commit()
     {
     }
   }
@@ -142,6 +217,12 @@ public final class LogFactory
     }
 
     @Override
+    public String get(String name)
+    {
+      return null;
+    }
+
+    @Override
     public void clear()
     {
     }
@@ -150,17 +231,7 @@ public final class LogFactory
   private static final class DefaultLog implements Log
   {
     @Override
-    public void trace(Object message)
-    {
-    }
-
-    @Override
     public void trace(String message, Object... args)
-    {
-    }
-
-    @Override
-    public void debug(Object message)
     {
     }
 
@@ -170,17 +241,7 @@ public final class LogFactory
     }
 
     @Override
-    public void info(Object message)
-    {
-    }
-
-    @Override
     public void info(String message, Object... args)
-    {
-    }
-
-    @Override
-    public void warn(Object message)
     {
     }
 
@@ -190,7 +251,7 @@ public final class LogFactory
     }
 
     @Override
-    public void error(Object message)
+    public void warn(Throwable throwable)
     {
     }
 
@@ -200,7 +261,7 @@ public final class LogFactory
     }
 
     @Override
-    public void fatal(Object message)
+    public void error(Throwable throwable)
     {
     }
 
@@ -210,7 +271,17 @@ public final class LogFactory
     }
 
     @Override
-    public void dump(Object message, Throwable throwable)
+    public void fatal(Throwable throwable)
+    {
+    }
+
+    @Override
+    public void dump(String message, Throwable throwable)
+    {
+    }
+
+    @Override
+    public void dump(Throwable throwable)
     {
     }
   }
