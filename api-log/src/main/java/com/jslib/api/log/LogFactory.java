@@ -77,6 +77,10 @@ public final class LogFactory
     return provider.getLogContext();
   }
 
+  public static LogTransaction getLogTransaction() {
+    return provider.getLogTransaction();
+  }
+  
   /**
    * Create a named logger. By convention logger name is the name of the class for which it is created. This method is
    * here for completeness and expected to be used in special cases. This method delegates

@@ -14,13 +14,18 @@ package com.jslib.api.log;
 public interface LogProvider
 {
   LogConfig getLogConfig();
-  
+
   /**
    * Get the instance of logger context usable to store diagnostic context data on current thread.
    * 
    * @return logger context instance.
    */
   LogContext getLogContext();
+
+  default LogTransaction getLogTransaction()
+  {
+    return DefaultLogTransaction.instance;
+  };
 
   /**
    * Create named logger instance.

@@ -45,7 +45,7 @@ public interface LogContext
 
   /**
    * Return logger context data by name, from current thread, or null if named data is missing.
-   *  
+   * 
    * @param name name for context data, not null.
    * @return logger context data, possible null.
    */
@@ -53,4 +53,5 @@ public interface LogContext
 
   /** Cleanup all context data related to current thread. */
   void clear();
+
 }
