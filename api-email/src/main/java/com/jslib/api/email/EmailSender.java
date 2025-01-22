@@ -2,9 +2,6 @@ package com.jslib.api.email;
 
 import java.util.Locale;
 
-import com.jslib.lang.Config;
-import com.jslib.lang.ConfigException;
-
 /**
  * Simple sender for template based email. To send an email, one should get email instance for desired template, set
  * email instance properties and send it, see sample code. Sender implementation should manage a templates repository
@@ -150,19 +147,6 @@ public interface EmailSender
 
   /** Default content type. This value is used if {@link EmailSender#PROP_CONTENT_TYPE} property is not provided. */
   static final String DEF_CONTENT_TYPE = "text/html; charset=UTF-8";
-
-  /**
-   * Configure this configurable using a given configuration object. Configuration object is clearly dependent on this
-   * configurable needs; it is configurable responsibility to ensure configuration object is valid, accordingly its internal
-   * rules. If validation fails implementation should throw {@link ConfigException}.
-   * <p>
-   * Any exception that may occur into configuration process are bubbled up.
-   * 
-   * @param config configuration object.
-   * @throws ConfigException if given configuration object is not valid.
-   * @throws Exception if anything goes wrong on configuration process.
-   */
-  void config(Config config) throws Exception;
 
   /**
    * Get email instance based on named template. Email sender should be configured with email templates repository. If

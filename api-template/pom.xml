@@ -6,7 +6,7 @@
 		<version>2.2</version>
 	</parent>
 	<artifactId>js-template-api</artifactId>
-	<version>1.1</version>
+	<version>2.1</version>
 
 	<name>Templates Engine API</name>
 	<description>API for content injection into template documents.</description>

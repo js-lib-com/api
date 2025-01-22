@@ -1,8 +1,7 @@
 package com.jslib.api.csv;
 
+import java.text.Format;
 import java.util.List;
-
-import com.jslib.format.Format;
 
 /**
  * Descriptor contains a reference to CSV format and methods to manage CSV columns mapping to class fields. CSV format

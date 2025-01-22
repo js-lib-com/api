@@ -1,7 +1,5 @@
 package com.jslib.api.csv;
 
-import com.jslib.lang.BugError;
-
 /**
  * Built-in characters used for CSV value enclosing (quote characters) both opening and closing.
  * 
@@ -24,7 +22,7 @@ public enum CsvQuote implements CharEnum
   public char value(int... index)
   {
     if(index.length == 0) {
-      throw new BugError("Missing index value.");
+      throw new IllegalArgumentException("Missing index value.");
     }
     switch(index[0]) {
     case 0:
@@ -33,6 +31,6 @@ public enum CsvQuote implements CharEnum
     case 1:
       return closeChar;
     }
-    throw new BugError("Index out of range.");
+    throw new IllegalArgumentException("Index out of range.");
   }
 }

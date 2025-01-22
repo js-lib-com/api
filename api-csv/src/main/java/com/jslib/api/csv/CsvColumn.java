@@ -1,6 +1,6 @@
 package com.jslib.api.csv;
 
-import com.jslib.format.Format;
+import java.text.Format;
 
 /**
  * A CSV column is mapped to a certain Java class field, identified by it name, and may have a value formatter. Value
