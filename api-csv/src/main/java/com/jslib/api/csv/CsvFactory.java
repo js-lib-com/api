@@ -36,7 +36,7 @@ import java.io.Writer;
  * 
  * @author Iulian Rotaru
  */
-public interface CsvFactory
+public interface CsvFactory<T>
 {
   /**
    * Create default descriptor for requested type. Created descriptor has default CSV format and no columns defined.
@@ -44,7 +44,7 @@ public interface CsvFactory
    * @param type Java class to map columns to.
    * @return created CSV descriptor.
    */
-  <T> CsvDescriptor<T> getDescriptor(Class<T> type);
+  CsvDescriptor<T> getDescriptor(Class<T> type);
 
   /**
    * Create typed CSV reader and configure it from given descriptor. It uses external CSV source stream. This factory
@@ -56,7 +56,7 @@ public interface CsvFactory
    * @param <T> bound Java class.
    * @return created CSV reader.
    */
-  <T> CsvReader<T> getReader(CsvDescriptor<T> descriptor, Reader reader);
+  CsvReader<T> getReader(CsvDescriptor<T> descriptor, Reader reader);
 
   /**
    * Alternative for {@link #getReader(CsvDescriptor, Reader)} when need to control character encoding. This variant
@@ -67,7 +67,7 @@ public interface CsvFactory
    * @param <T> bound Java class.
    * @return created CSV reader.
    */
-  <T> CsvReader<T> getReader(CsvDescriptor<T> descriptor, InputStream stream);
+  CsvReader<T> getReader(CsvDescriptor<T> descriptor, InputStream stream);
 
   /**
    * Create typed CSV writer and configure it from given descriptor. It uses external CSV target stream. This factory
@@ -79,7 +79,7 @@ public interface CsvFactory
    * @param <T> bound Java class.
    * @return created CSV writer.
    */
-  <T> CsvWriter<T> getWriter(CsvDescriptor<T> descriptor, Writer writer);
+  CsvWriter<T> getWriter(CsvDescriptor<T> descriptor, Writer writer);
 
   /**
    * Alternative for {@link #getWriter(CsvDescriptor, Writer)} when need to control character encoding. This variant
@@ -90,5 +90,5 @@ public interface CsvFactory
    * @param <T> bound Java class.
    * @return created CSV writer.
    */
-  <T> CsvWriter<T> getWriter(CsvDescriptor<T> descriptor, OutputStream stream);
+  CsvWriter<T> getWriter(CsvDescriptor<T> descriptor, OutputStream stream);
 }

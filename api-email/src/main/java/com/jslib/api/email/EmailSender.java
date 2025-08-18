@@ -1,6 +1,7 @@
 package com.jslib.api.email;
 
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Simple sender for template based email. To send an email, one should get email instance for desired template, set
@@ -147,6 +148,13 @@ public interface EmailSender
 
   /** Default content type. This value is used if {@link EmailSender#PROP_CONTENT_TYPE} property is not provided. */
   static final String DEF_CONTENT_TYPE = "text/html; charset=UTF-8";
+
+  /**
+   * Configure this email sender using given configuration properties.
+   *  
+   * @param config configuration properties.
+   */
+  void config(Properties config) throws Exception;
 
   /**
    * Get email instance based on named template. Email sender should be configured with email templates repository. If
